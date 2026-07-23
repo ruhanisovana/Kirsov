@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="/static/style.css">
+    <title>Notifications</title>
+</head>
+<body>
+
+<h2>Notifications</h2>
+
+{% if notifications %}
+
+    {% for n in notifications %}
+
+     
+     <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+
+    <p><strong>{{ n.full_name }}</strong></p>
+
+    <p>{{ n.message }}</p>
+
+    <small>{{ n.created_at }}</small>
+
+</div>
+           
+          {% if n.type == "new_request" %}
+    <a href="/shared_request/{{ n.request_id }}">
+        <button>View Request</button>
+    </a>
+
+{% elif n.type == "payment_notice" %}
+    <a href="/notices">
+        <button>View Notice</button>
+    </a>
+
+{% elif n.type == "notice_accepted" %}
+    <a href="/payment_history/{{ n.request_id }}">
+        <button>View Payment</button>
+    </a>
+
+{% elif n.type == "notice_rejected" %}
+    <a href="/notices">
+        <button>View Reason</button>
+    </a>
+
+{% elif n.type == "correction_approved" or
+        n.type == "correction_rejected" %}
+<a href="/payment_history/{{ n.request_id }}">
+    <button>View Correction</button>
+</a>
+{% endif %}
+
+    {% endfor %}
+
+{% else %}
+
+<p>No notifications yet.</p>
+
+{% endif %}
+
+</body>
+</html>

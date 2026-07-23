@@ -1,0 +1,39 @@
+<!DOCTYPE>
+<html>
+<head>
+
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Trash</title>
+
+
+</head>
+<body>
+
+<h1>Trash</h1>
+
+{% for person in people %}
+
+<p>{{ person.name }}</p>
+<p>{{ person.status }}</p>
+
+{% if person.status == 'Cancelled' %}
+<a href="/restore/{{ person.id }}">
+<button>
+Restore
+</button>
+</a>
+
+<p>TEST DELETE BUTTON</p>
+
+<a href="/permanent_delete/{{ person.id }}"
+   onclick="return confirm('Delete forever?')">
+   <button>
+   Delete Forever
+   </button>
+</a>
+
+<hr>
+{% endif %}
+{% endfor %}
+</body>
+</html>

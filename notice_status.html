@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Notice Status</title>
+
+
+</head>
+<body>
+
+<h2>Payment Notice Status</h2>
+
+<p>
+Amount: ₹{{ notice.amount }}
+</p>
+
+<p>
+Proof: {{ notice.proof }}
+</p>
+
+<p>
+Note: {{ notice.note }}
+</p>
+
+<p>
+Status: {{ notice.status }}
+</p>
+
+{% if notice.status == "waiting" %}
+
+<p>
+Waiting for sender response...
+</p>
+
+{% endif %}
+
+{% if notice.status == "accepted" %}
+
+<p>
+Payment verified successfully.
+</p>
+
+{% endif %}
+
+{% if notice.status == "rejected" %}
+
+<p>
+Payment rejected.
+</p>
+
+<p>
+Reason:
+{{ notice.rejection_reason }}
+</p>
+
+{% endif %}
+
+</body>
+</html>

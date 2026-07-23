@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<title>Shared Request</title>
+
+</head>
+
+<body>
+
+
+<h1>💳 Request Details</h1>
+<div class="summary-grid">
+
+    <div class="summary-card">
+        <h4>Total Amount</h4>
+        <h2>₹{{ person.amount }}</h2>
+    </div>
+
+    <div class="summary-card">
+        <h4>Paid</h4>
+        <h2>₹{{ person.amount_paid }}</h2>
+    </div>
+
+    
+    <div class="summary-card">
+       <h4>Remaining</h4>
+       <h2>₹{{ remaining }}</h2>
+    </div>
+
+    <div class="summary-card">
+        <h4>Status</h4>
+        <h2>{{ person.status }}</h2>
+    </div>
+
+</div>
+<div class="card request-card">
+
+
+<h2>
+👤 {{ person.name }}
+</h2>
+
+
+<p>
+🏷 Category:
+{{ person.category }}
+</p>
+
+
+<p>
+📞 {{ person.phone }}
+</p>
+
+
+<p>
+💰 Total:
+₹{{ person.amount }}
+</p>
+
+<p>
+Address: {{ person.address }}
+</p>
+
+
+{% if person.amount|int > 0 %}
+    {% set progress = (person.amount_paid|int / person.amount|int) * 100 %}
+{% else %}
+    {% set progress = 0 %}
+{% endif %}
+
+{% if progress > 100 %}
+    {% set progress = 100 %}
+{% endif %}
+
+<div class="payment-progress-box">
+
+<h3>
+💳 Payment Progress {{ progress|round(1) }}%
+</h3>
+
+<div class="progress-container">
+
+<div class="progress-fill"
+style="width: {{ progress }}%;">
+</div>
+
+</div>
+
+</div>
+
+
+<p><strong>Paid:</strong> ₹{{ person.amount_paid }}</p>
+
+
+<p><strong>Remaining:</strong> ₹{{ remaining }}</p>
+
+{% if overpaid > 0 %}
+<p class="overpaid">
+💰 <strong>Overpaid:</strong> ₹{{ overpaid }}
+</p>
+{% endif %}
+
+<div class="payment-card">
+
+    <h3>💳 Payment Details</h3>
+
+    <div class="payment-row">
+        <span>Mode</span>
+        <strong>{{ person.payment_mode }}</strong>
+    </div>
+
+    <div class="payment-row">
+        <span>Details</span>
+
+        <div class="payment-value">
+
+            {% if person.payment_info.startswith('http') %}
+                <a href="{{ person.payment_info }}" target="_blank">
+                    🔗 Open Payment Link
+                </a>
+
+            {% elif person.payment_mode == "Phone Number" %}
+                <a href="tel:{{ person.payment_info }}">
+                    📞 {{ person.payment_info }}
+                </a>
+
+            {% elif person.payment_mode == "Email" %}
+                <a href="mailto:{{ person.payment_info }}">
+                    ✉️ {{ person.payment_info }}
+                </a>
+
+            {% else %}
+                {{ person.payment_info }}
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+<p>
+<strong>Status:</strong> {{ person.status }}
+</p>
+
+<p>
+<strong>Deadline:</strong> {{ person.deadline }}
+</p>
+
+<p>
+<strong>Message:</strong> {{ person.message }}
+</p>
+
+<p>
+<strong>Created At:</strong> {{ person.created_at }}
+</p>
+
+
+</div>
+
+{% if session["user_id"] == person.receiver_id %}
+
+<div class="box">
+
+<h2>🔔Send Payment Notice</h2>
+
+<form action="{{ url_for('send_notice', id=person.id) }}"
+      method="POST"
+      enctype="multipart/form-data">
+
+<input
+type="number"
+name="amount"
+placeholder="Amount Paid"
+required>
+
+<input
+type="text"
+name="proof"
+placeholder="Transaction ID">
+
+<input
+type="file"
+name="proof_image">
+
+<textarea
+name="note"
+placeholder="Write a message"></textarea>
+
+<button type="submit">
+
+Send Notice
+
+</button>
+
+</form>
+
+<a href="/notify_sender/{{ person.id }}">
+    <button>
+        View Notices
+    </button>
+</a>
+
+</div>
+
+
+{% endif %}
+
+<h2>📜Payment History</h2> 
+
+<div class="summary"><h2>{{ person.name }} - Payment History</h2><p>
+Total Amount: ₹{{ person.amount }}
+</p><p>
+Paid Amount: ₹{{ person.amount_paid }}
+</p><p>
+Remaining:
+₹{{ person.amount - person.amount_paid }}
+</p><p>
+Current Status:
+{{ person.status }}
+</p></div>
+
+{% for payment in payments %}
+<div class="payment-card">
+
+    <div class="payment-title">
+        💰 Payment #{{ loop.index }}
+    </div>
+
+    <div class="payment-row">
+        <strong>Amount</strong>
+        <span>₹{{ payment.amount }}</span>
+    </div>
+
+    <div class="payment-row">
+        <strong>Date</strong>
+        <span>{{ payment.payment_date }}</span>
+    </div>
+
+</div>
+{% endfor %}
+<div class="box">
+
+    <h2>📝 Correction History</h2>
+
+    {% if corrections %}
+
+        {% for correction in corrections %}
+
+        <div class="correction-card">
+
+            <h3>📝 Correction #{{ loop.index }}</h3>
+
+            <div class="row">
+                <strong>Amount</strong>
+                <span>₹{{ correction.amount }}</span>
+            </div>
+
+            <div class="row">
+                <strong>Reason</strong>
+                <span>{{ correction.reason }}</span>
+            </div>
+
+            <div class="row">
+    <strong>Receiver Decision</strong>
+
+    <span class="
+    {% if correction.status == 'approved' %}
+        accepted
+    {% elif correction.status == 'rejected' %}
+        rejected
+    {% else %}
+        waiting
+    {% endif %}
+    ">
+
+        {% if correction.status == "approved" %}
+            Approved by Receiver
+        {% elif correction.status == "rejected" %}
+            Rejected by Receiver
+        {% else %}
+            Waiting for Receiver
+        {% endif %}
+
+    </span>
+</div>
+
+            {% if session["user_id"] == correction.to_user_id and correction.status == "waiting" %}
+
+            <div class="correction-buttons">
+
+                <form action="/approve_correction/{{ correction.id }}" method="post">
+
+                    <button class="approve-btn">
+                        ✅ Approve
+                    </button>
+
+                </form>
+
+                <form action="/reject_correction/{{ correction.id }}" method="post">
+
+                    <button class="reject-btn">
+                        ❌ Reject
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No correction history.</p>
+
+    {% endif %}
+
+</div>
+
+<div class="box">
+
+<h2>📨 Payment Notices</h2>
+
+{% if notices %}
+
+    {% for notice in notices %}
+
+    <div class="item">
+
+        <h3>📨 Notice #{{ loop.index }}</h3>
+
+        <div class="row">
+            <strong>Amount</strong>
+            <span>₹{{ notice.amount }}</span>
+        </div>
+
+        <div class="row">
+    <strong>Sender Decision</strong>
+
+    <span class="
+    {% if notice.status == 'accepted' %}
+        accepted
+    {% elif notice.status == 'rejected' %}
+        rejected
+    {% else %}
+        waiting
+    {% endif %}
+    ">
+
+        {% if notice.status == "accepted" %}
+            Accepted by Sender
+        {% elif notice.status == "rejected" %}
+            Rejected by Sender
+        {% else %}
+            Waiting for Sender
+        {% endif %}
+
+    </span>
+</div>
+
+        {% if notice.proof %}
+        <div class="row">
+            <strong>Transaction ID</strong>
+            <span>{{ notice.proof }}</span>
+        </div>
+        {% endif %}
+
+        {% if notice.note %}
+        <div class="row">
+            <strong>Message</strong>
+            <span>{{ notice.note }}</span>
+        </div>
+        {% endif %}
+
+        {% if notice.created_at %}
+        <div class="row">
+            <strong>Date</strong>
+            <span>{{ notice.created_at }}</span>
+        </div>
+        {% endif %}
+
+        {% if notice.proof_image %}
+        <div class="proof-box">
+            <strong>Proof Screenshot</strong><br><br>
+
+            <a href="/static/uploads/{{ notice.proof_image }}" target="_blank">
+                <img src="/static/uploads/{{ notice.proof_image }}"
+                     class="proof-image">
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+<p>No payment notices yet.</p>
+
+{% endif %}
+
+</div>
+
+<div class="box">
+
+<h2>🕒 Timeline</h2>
+
+<div class="timeline">
+
+<div class="timeline-item">
+
+<div class="timeline-icon">📝</div>
+
+<div class="timeline-content">
+
+<h3>Request Created</h3>
+
+<p>
+Request for
+<b>{{ person.name }}</b>
+was created.
+</p>
+
+<span>{{ person.created_at }}</span>
+
+</div>
+
+</div>
+
+{% for payment in payments %}
+
+<div class="timeline-item">
+
+<div class="timeline-icon">💰</div>
+
+<div class="timeline-content">
+
+<h3>Payment Recorded</h3>
+
+<p>
+
+₹{{ payment.amount }}
+
+added to payment history.
+
+</p>
+
+<span>
+
+{{ payment.payment_date }}
+
+</span>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+{% for notice in notices %}
+
+<div class="timeline-item">
+
+<div class="timeline-icon">
+
+{% if notice.status == "accepted" %}
+✅
+{% elif notice.status == "rejected" %}
+❌
+{% else %}
+📨
+{% endif %}
+
+</div>
+
+<div class="timeline-content">
+
+<h3>
+
+Payment Notice
+
+</h3>
+
+<p>
+
+Receiver submitted
+
+₹{{ notice.amount }}
+
+payment notice.
+
+</p>
+
+<p>
+
+Status :
+
+<strong class="
+{% if notice.status=='accepted' %}
+accepted
+{% elif notice.status=='rejected' %}
+rejected
+{% else %}
+waiting
+{% endif %}
+">
+
+{{ notice.status|title }}
+
+</strong>
+
+</p>
+
+{% if notice.proof %}
+
+<p>
+
+Transaction ID :
+
+{{ notice.proof }}
+
+</p>
+
+{% endif %}
+
+{% if notice.note %}
+
+<p>
+
+Message :
+
+{{ notice.note }}
+
+</p>
+
+{% endif %}
+
+<span>
+
+{{ notice.created_at }}
+
+</span>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+
+{% for correction in corrections %}
+
+<div class="timeline-item">
+
+    <div class="timeline-icon">
+
+        {% if correction.status == "approved" %}
+            ✅
+        {% elif correction.status == "rejected" %}
+            ❌
+        {% else %}
+            📝
+        {% endif %}
+
+    </div>
+
+    <div class="timeline-content">
+
+        <h3>Payment Correction</h3>
+
+        <p>
+
+        ₹{{ correction.amount }}
+
+        correction requested.
+
+        </p>
+
+        <p>
+
+        Status :
+
+        <strong class="
+        {% if correction.status=='approved' %}
+            accepted
+        {% elif correction.status=='rejected' %}
+            rejected
+        {% else %}
+            waiting
+        {% endif %}
+        ">
+
+        {{ correction.status|title }}
+
+        </strong>
+
+        </p>
+
+        {% if correction.reason %}
+        <p>
+        Reason:
+        {{ correction.reason }}
+        </p>
+        {% endif %}
+
+        <span>
+
+        {{ correction.created_at }}
+
+        </span>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<br>
+
+<a href="/shared_request/{{ person.id }}">
+
+<button class="back-btn">
+
+⬅ Back
+
+</button>
+
+</a>
+
+</body>
+
+</html>

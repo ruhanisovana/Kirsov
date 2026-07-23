@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Notice Trash</title>
+
+
+</head>
+<body>
+
+<h1>Notices Trash</h1>
+
+{% for notice in notices %}
+
+<p>Amount: ₹{{ notice.amount }}</p>
+<p>Note: {{ notice.note }}</p>
+<p>Status: {{ notice.status }}</p>
+
+<a href="/notices_restore/{{ notice.id }}">
+    <button>Restore</button>
+</a>
+
+<a href="/permanent_notices_delete/{{ notice.id }}"
+onclick="return confirm('Delete forever?')">
+    <button>Delete Forever</button>
+</a>
+
+<hr>
+
+{% endfor %}
+
+</body>
+</html>

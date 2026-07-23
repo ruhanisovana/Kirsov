@@ -1,0 +1,229 @@
+<!DOCTYPE>
+<html>
+<head>
+
+    <link rel="stylesheet" href="/static/style.css">
+    
+<title>Feedback</title>
+
+</head>
+<body>
+<h3>📊 Feedback Categories</h3>
+
+<div class="category-box">
+
+<a href="/feedback" class="category-btn">
+📋 All ({{ all_count }})
+</a>
+
+<a href="/feedback?category=Bug" class="category-btn">
+🐞 Bug ({{ bug_count }})
+</a>
+
+<a href="/feedback?category=Feature Request" class="category-btn">
+💡 Feature Request ({{ feature_count }})
+</a>
+
+<a href="/feedback?category=Question" class="category-btn">
+❓ Question ({{ question_count }})
+</a>
+
+<a href="/feedback?category=Improvement" class="category-btn">
+🚀 Improvement ({{ improvement_count }})
+</a>
+
+<a href="/feedback?category=Confusing" class="category-btn">
+🤔 Confusing ({{ confusing_count }})
+</a>
+
+</div>
+
+<h2>Submit Feedback</h2>
+
+<form action="/add_feedback" method="post">
+
+<select name="category" required>
+
+<option value="">Choose Category</option>
+
+<option value="Bug">Bug</option>
+
+<option value="Feature Request">
+Feature Request
+</option>
+
+<option value="Confusing">
+Confusing
+</option>
+
+<option value="Improvement">
+Improvement
+</option>
+
+<option value="Question">
+Question
+</option>
+
+</select>
+
+<br><br>
+
+<input
+type="text"
+name="title"
+placeholder="Short Title"
+required>
+
+<br><br>
+
+<textarea
+name="message"
+placeholder="Describe your problem or idea"
+required>
+</textarea>
+
+<br><br>
+
+<button type="submit">
+Submit
+</button>
+
+</form>
+
+<hr>
+
+<h2>Community Feedback</h2>
+
+{% for item in feedbacks %}
+
+<h3>👤 {{ item.username }}</h3>
+
+<p><strong>Category:</strong>{{ item.category }}</p>
+
+<p><strong>Title:</strong>{{ item.title }}</p>
+
+<p><strong>Message:</strong>{{ item.message }}</p>
+
+<p>
+Supports:
+{{ item.supports }}
+</p>
+
+<p>
+{{ item.created_at }}
+</p>
+{% if item.user_id == session["user_id"] %}
+
+<a href="/delete_feedback/{{ item.id }}"
+onclick="return confirm('Delete this feedback?')">
+
+<button>
+🗑 Delete Feedback
+</button>
+
+</a>
+
+{% endif %}
+
+<a href="/support_feedback/{{ item.id }}">
+<button>
+👍 Support
+</button>
+</a>
+
+<form action="/reply_feedback/{{ item.id }}"
+method="post">
+
+<textarea
+name="message"
+placeholder="Share your opinion..."
+required>
+</textarea>
+
+<button type="submit">
+Reply
+</button>
+
+</form>
+
+<button
+type="button"
+onclick="toggleReplies({{ item.id }})">
+
+💬 {{ item.replies|length }} Discussions
+
+</button>
+
+<div
+id="replies-{{ item.id }}"
+style="display:none;">
+
+
+{% for reply in item.replies %}
+
+<div class="reply-box">
+
+    <strong>
+        👤 {{ reply.username }}
+    </strong>
+
+    <p>
+        {{ reply.message }}
+    </p>
+
+    <small>
+        🕒 {{ reply.created_at }}
+    </small>
+
+</div>
+
+{% if reply.user_id == session["user_id"] %}
+
+<br>
+
+<a href="/delete_reply/{{ reply.id }}"
+onclick="return confirm('Delete your reply?')">
+
+<button type="button">
+🗑 Delete
+</button>
+
+</a>
+
+{% endif %}
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<p>No feedback found.</p>
+
+{% endfor %}
+
+<script>
+
+function toggleReplies(id)
+{
+    let box =
+    document.getElementById(
+        "replies-" + id
+    );
+
+    if (
+        box.style.display === "none"
+    )
+    {
+        box.style.display = "block";
+    }
+    else
+    {
+        box.style.display = "none";
+    }
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE>
+<html>
+<head>
+    
+<link rel="stylesheet" href="/static/style.css">
+<title>Corrections</title>
+</head>
+<body>
+<h2>Correction History</h2>
+
+{% for item in corrections %}
+
+<div class="correction-card">
+
+    <h3>📝 Correction #{{ loop.index }}</h3>
+
+    <div class="detail-row">
+        <strong>💰 Payment</strong>
+        <span>₹{{ item.amount }}</span>
+    </div>
+
+    <div class="reason-box">
+        <strong>📝 Reason</strong>
+        <p>{{ item.reason }}</p>
+    </div>
+
+    <div class="detail-row">
+        <strong>📌 Status</strong>
+        <span>{{ item.status }}</span>
+    </div>
+
+    <div class="detail-row">
+        <strong>👤 From</strong>
+        <span>{{ item.from_user_id }}</span>
+    </div>
+
+    <div class="detail-row">
+        <strong>👥 To</strong>
+        <span>{{ item.to_user_id }}</span>
+    </div>
+
+    <div class="detail-row">
+        <strong>🔑 Login ID</strong>
+        <span>{{ session["user_id"] }}</span>
+    </div>
+
+    <div class="detail-row">
+        <strong>📅 Date</strong>
+        <span>{{ item.created_at }}</span>
+    </div>
+
+    {% if item.status == "waiting" %}
+
+        {% if session["user_id"] == item.to_user_id %}
+
+        <div class="button-group">
+
+            <form action="/approve_correction/{{ item.id }}" method="POST">
+                <button class="approve-btn">✅ Approve</button>
+            </form>
+
+            <form action="/reject_correction/{{ item.id }}" method="POST">
+                <button class="reject-btn">❌ Reject</button>
+            </form>
+
+        </div>
+
+        {% else %}
+
+        <div class="waiting-box">
+            ⏳ Waiting for the other user to respond.
+        </div>
+
+        {% endif %}
+
+    {% elif item.status == "approved" %}
+
+    <div class="approved-box">
+        ✅ Correction Approved
+    </div>
+
+    {% elif item.status == "rejected" %}
+
+    <div class="rejected-box">
+        ❌ Correction Rejected
+    </div>
+
+    {% endif %}
+
+</div>
+{% endfor %}
+</body>
+</html>

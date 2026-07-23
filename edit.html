@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+<link rel="stylesheet" href="/static/style.css">
+<title>Edit Request</title>
+
+</head>
+
+<body>
+
+<h1>Edit Request</h1>
+
+<form
+action="/update/{{ person.id }}"
+method="POST">
+
+<input
+type="text"
+name="name"
+value="{{ person.name }}"
+placeholder="Name">
+
+<br><br>
+
+<select name="category">
+
+<option
+value="Student"
+{% if person.category == "Individual" %}
+selected
+{% endif %}>
+Individual
+</option>
+
+<option
+value="Personal"
+{% if person.category == "Business" %}
+selected
+{% endif %}>
+Business
+</option>
+
+<option
+value="Shop"
+{% if person.category == "Organization" %}
+selected
+{% endif %}>
+Organization
+</option>
+
+<option
+value="Business"
+{% if person.category == "Others" %}
+selected
+{% endif %}>
+Others
+</option>
+
+</select>
+
+<br><br>
+
+<input
+type="text"
+name="phone"
+value="{{ person.phone }}"
+placeholder="Phone Number">
+
+<br><br>
+
+<input
+type="text"
+name="address"
+value="{{ person.address }}"
+placeholder="Address">
+
+<br><br>
+
+<input
+type="number"
+name="amount"
+value="{{ person.amount }}"
+placeholder="Amount">
+
+<br></br>
+
+<select
+name="payment_mode"
+onchange="updatePaymentInfo(this)">
+
+<option
+value="Online Link"
+{% if person.payment_mode == "Online Link" %}
+selected
+{% endif %}>
+Online Link
+</option>
+
+<option
+value="Scanner / QR"
+{% if person.payment_mode == "Scanner / QR" %}
+selected
+{% endif %}>
+Scanner / QR
+</option>
+
+<option
+value="Number"
+{% if person.payment_mode == "Number" %}
+selected
+{% endif %}>
+Number
+</option>
+
+<option
+value="Cash"
+{% if person.payment_mode == "Cash" %}
+selected
+{% endif %}>
+Cash
+</option>
+
+<option
+value="Other"
+{% if person.payment_mode == "Other" %}
+selected
+{% endif %}>
+Other
+</option>
+
+</select>
+
+<br><br>
+
+<input
+type="text"
+name="payment_info"
+id="payment_info"
+value="{{ person.payment_info }}"
+placeholder="Payment Info">
+
+<br><br>
+
+<br><br>
+
+<label>Deadline</label>
+
+<input
+type="date"
+name="deadline"
+value="{{ person.deadline }}">
+
+<br><br>
+
+<textarea
+name="message"
+placeholder="Message">{{ person.message }}</textarea>
+
+<br><br>
+
+
+<input
+type="text"
+name="admin_name"
+value="{{ person.admin_name }}"
+placeholder="Sender / Organization Name">
+
+<br><br>
+
+<button type="submit">
+Update Request
+</button>
+
+</form>
+
+<script>
+
+function updatePaymentInfo(selectElement) {
+
+let input =
+document.getElementById("payment_info");
+
+let mode =
+selectElement.value;
+
+if(mode == "Online Link") {
+
+input.placeholder =
+"Type online payment link";
+
+}
+
+else if(mode == "Scanner / QR") {
+
+input.placeholder =
+"Type QR image link";
+
+}
+
+else if(mode == "Number") {
+
+input.placeholder =
+"Type phone number or account number";
+
+}
+
+else if(mode == "Cash") {
+
+input.placeholder =
+"Put payment date or cash details";
+
+}
+
+else if(mode == "Other") {
+
+input.placeholder =
+"Enter payment details";
+
+}
+
+else {
+
+input.placeholder =
+"Payment Info";
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

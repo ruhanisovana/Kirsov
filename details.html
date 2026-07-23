@@ -1,0 +1,107 @@
+<!DOCTYPE>
+<html>
+<head>
+<title>All Requests</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h2>My Requests</h2>
+
+
+<form method="GET" action="/details">  <input  
+type="text"  
+name="search"  
+placeholder="Search Name">
+
+<button type="submit">  
+Search  
+</button>  </form>
+
+
+<a href="/trash">  
+<button>  
+🗑 Trash  
+</button>  
+</a> 
+
+<br><br>
+
+<div class="filter-bar">
+
+<a href="/details" class="filter-btn">
+All
+</a>
+
+<a href="/details?status=Pending" class="filter-btn">
+Pending
+</a>
+
+<a href="/details?status=In Progress" class="filter-btn">
+In Progress
+</a>
+
+<a href="/details?status=Completed" class="filter-btn">
+Completed
+</a>
+
+<a href="/details?status=Cancelled" class="filter-btn">
+Cancelled
+</a>
+
+</div>
+
+{% for person in people %}
+
+<div class="card request-card">
+
+
+<h2>
+👤 {{ person.name }}
+</h2>
+
+<p>
+💰 Total: ₹{{ person.amount }}
+</p>
+
+<p>
+<strong>Status:</strong> {{ person.status }}
+</p>
+
+
+{% if person.amount|int > 0 %}
+    {% set progress = (person.amount_paid|int / person.amount|int) * 100 %}
+{% else %}
+    {% set progress = 0 %}
+{% endif %}
+
+{% if progress > 100 %}
+    {% set progress = 100 %}
+{% endif %}
+
+<div class="payment-progress-box">
+
+<h3>
+💳 Payment Progress {{ progress|round(1) }}%
+</h3>
+
+<div class="progress-container">
+
+<div class="progress-fill"
+style="width: {{ progress }}%;">
+</div>
+
+</div>
+
+</div>
+
+
+<a href="/details/{{ person.id }}">
+<button>
+View Details
+</button>
+</a>
+
+{% endfor %}
+</body>
+</html>

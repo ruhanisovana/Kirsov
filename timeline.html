@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kirsov Timeline</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="box">
+
+    <h2>🕒 Timeline</h2>
+
+    <div class="timeline-card">
+
+        <div class="timeline-item">
+
+            <div class="timeline-icon">👤</div>
+
+            <div class="timeline-content">
+
+                <h3>{{ person.name }}</h3>
+
+                <p>
+                    Total Amount :
+                    <strong>₹{{ person.amount }}</strong>
+                </p>
+
+                <p>
+                    Paid :
+                    <strong>₹{{ person.amount_paid }}</strong>
+                </p>
+
+                <p>
+                    Status :
+                    <strong class="
+                    {% if person.status == 'Completed' %}
+                        accepted
+                    {% elif person.status == 'Cancelled' %}
+                        rejected
+                    {% else %}
+                        waiting
+                    {% endif %}
+                    ">
+                        {{ person.status }}
+                    </strong>
+                </p>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        {% for event in events %}
+
+        <div class="timeline-item">
+
+            <div class="timeline-icon">
+                {{ event.icon }}
+            </div>
+
+            <div class="timeline-content">
+
+                <h3>{{ event.title }}</h3>
+
+                <p>{{ event.text }}</p>
+
+                <small>{{ event.time }}</small>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <p>No timeline available.</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

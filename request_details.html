@@ -1,0 +1,322 @@
+<!DOCTYPE>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+<title>Request Details</title>
+</head>
+<body>
+<h1>💳 Request Details</h1>
+
+
+<div class="summary-grid">
+
+    <div class="summary-card">
+        <h4>Total Amount</h4>
+        <h2>₹{{ person.amount }}</h2>
+    </div>
+
+    <div class="summary-card">
+        <h4>Paid</h4>
+        <h2>₹{{ person.amount_paid }}</h2>
+    </div>
+
+    <div class="summary-card">
+       <h4>Remaining</h4>
+       <h2>₹{{ remaining }}</h2>
+    </div>
+
+    <div class="summary-card">
+        <h4>Status</h4>
+        <h2>{{ person.status }}</h2>
+    </div>
+
+</div>
+
+<div class="card request-card">
+
+
+<h2>
+👤 {{ person.name }}
+</h2>
+
+
+<p>
+🏷 Category:
+{{ person.category }}
+</p>
+
+
+<p>
+📞 {{ person.phone }}
+</p>
+
+
+<p>
+💰 Total:
+₹{{ person.amount }}
+</p>
+
+<p>
+Address: {{ person.address }}
+</p>
+
+{% if person.amount|int > 0 %}
+    {% set progress = (person.amount_paid|int / person.amount|int) * 100 %}
+{% else %}
+    {% set progress = 0 %}
+{% endif %}
+
+{% if progress > 100 %}
+    {% set progress = 100 %}
+{% endif %}
+
+<div class="payment-progress-box">
+
+<h3>
+💳 Payment Progress {{ progress|round(1) }}%
+</h3>
+
+<div class="progress-container">
+
+<div class="progress-fill"
+style="width: {{ progress }}%;">
+</div>
+
+</div>
+
+</div>
+
+<p><strong>Paid:</strong> ₹{{ person.amount_paid }}</p>
+
+<p><strong>Remaining:</strong> ₹{{ remaining }}</p>
+
+{% if overpaid > 0 %}
+<p class="overpaid">
+ <strong>Overpaid:</strong> ₹{{ overpaid }}
+</p>
+{% endif %}
+
+<div class="payment-card">
+
+    <h3>💳 Payment Details</h3>
+
+    <div class="payment-row">
+        <span>Mode</span>
+        <strong>{{ person.payment_mode }}</strong>
+    </div>
+
+    <div class="payment-row">
+        <span>Details</span>
+
+        <div class="payment-value">
+
+            {% if person.payment_info.startswith('http') %}
+                <a href="{{ person.payment_info }}" target="_blank">
+                    🔗 Open Payment Link
+                </a>
+
+            {% elif person.payment_mode == "Phone Number" %}
+                <a href="tel:{{ person.payment_info }}">
+                    📞 {{ person.payment_info }}
+                </a>
+
+            {% elif person.payment_mode == "Email" %}
+                <a href="mailto:{{ person.payment_info }}">
+                    ✉️ {{ person.payment_info }}
+                </a>
+
+            {% else %}
+                {{ person.payment_info }}
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+<p>
+<strong>Status:</strong> {{ person.status }}
+</p>
+
+<p>
+<strong>Deadline:</strong> {{ person.deadline }}
+</p>
+
+<p>
+<strong>Message:</strong> {{ person.message }}
+</p>
+
+<p>
+<strong>Created At:</strong> {{ person.created_at }}
+</p>
+
+<p>
+
+<strong>Sent By:</strong>
+
+ {{ person.admin_name }}
+
+</p>
+
+{% set reminder_message =
+"🔔 KIRSOV PAYMENT NOTICE" ~
+
+"%0A%0A" ~
+
+"👤 Sender: " ~ person.admin_name ~
+
+"%0A" ~
+
+"🆔 Sender ID: " ~ person.sender_id ~
+
+"%0A%0A" ~
+
+"Hello " ~ person.name ~ "," ~
+
+"%0A%0A" ~
+
+"You have a payment request waiting for your review." ~
+
+"%0A" ~
+
+"Please check the details before the deadline." ~
+
+"%0A%0A" ~
+
+"📌 Purpose: " ~ person.message ~
+
+"%0A" ~
+
+"💰 Total Amount: ₹" ~ person.amount ~
+
+"%0A" ~
+
+"✅ Paid: ₹" ~ person.amount_paid ~
+
+"%0A" ~
+
+"⏳ Remaining: ₹" ~ remaining ~
+
+"%0A" ~
+
+"📊 Current Status: " ~ person.status ~
+
+"%0A%0A" ~
+
+"🔍 Log in to Kirsov to view your payment history, timeline, notices, proofs and corrections." ~
+
+"%0A%0A" ~
+
+"👉 Open Kirsov:" ~
+
+"%0A" ~
+
+"http://192.0.0.4:5000/login" ~
+
+"%0A%0A" ~
+
+"Thank you for using Kirsov."
+%}
+
+<a href="https://wa.me/91{{ person.phone }}?text={{ reminder_message }}"
+target="_blank">
+
+<button type="button">
+Send WhatsApp Message
+</button>
+
+</a>
+
+<a
+href="sms:{{ person.phone }}?body={{ reminder_message }}"
+class="sms-btn">
+<button type="button">
+Send Text Message
+</button>
+</a>
+
+{% if person.payment_info %}
+
+<a
+href="{% if 'http' in person.payment_info %}{{ person.payment_info }}{% else %}#{% endif %}"
+target="_blank">
+
+<button type="button">
+
+{% if person.payment_mode == "Payment Link" %}
+
+Pay Now
+
+{% elif person.payment_mode == "Phone Number" %}
+
+Call / pay Now
+
+{% elif person.payment_mode == "Digital Wallet" %}
+
+Open Wallet
+
+{% elif person.payment_mode == "Bank Transfer" %}
+
+View Bank Details
+
+{% elif person.payment_mode == "Cash" %}
+
+Cash Payment
+
+{% else %}
+
+View Details
+
+{% endif %}
+
+</button>
+
+</a>
+
+{% endif %}
+
+<a href="/edit/{{ person.id }}">
+<button type="button">
+Edit
+</button>
+</a>
+
+<a href="/payment_history/{{ person.id }}">
+    <button type="button">
+        View Payment History
+    </button>
+</a>
+
+<form action="/record_payment/{{ person.id }}" method="post">
+    <input
+        type="number"
+        name="payment"
+        placeholder="Amount Received"
+        required>
+
+    <button type="submit">
+        Record Payment
+    </button>
+</form>
+
+<a href="/timeline/{{ person.id }}">
+<button>Timeline</button>
+</a>
+
+<a href="/delete/{{ person.id }}"
+onclick="return confirm('Are you sure you want to delete this request?')">
+
+<button type="button">
+Delete
+</button>
+
+</a>
+
+{% if person.status_flag == 'deleted' %}
+    <a href="/restore/{{ person.id }}">Restore</a>
+{% endif %}
+
+</div>
+
+</body>
+</html>

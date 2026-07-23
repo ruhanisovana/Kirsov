@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    
+<link rel="stylesheet" href="/static/style.css">
+<title>Payment History</title>
+   
+</head>
+<body>
+
+<div class="summary"><h2>{{ person.name }} - Payment History</h2><p>
+Total Amount: ₹{{ person.amount }}
+</p><p>
+Paid Amount: ₹{{ person.amount_paid }}
+</p><p>
+Remaining:
+₹{{ person.amount - person.amount_paid }}
+</p><p>
+Current Status:
+{{ person.status }}
+</p></div>
+
+{% for payment in payments %}
+
+    <div class="payment-card"> 
+
+    <div class="payment-title">
+        💰 Payment #{{ loop.index }}
+    </div>
+
+    <div class="payment-row">
+        <strong>Amount</strong>
+        <span>₹{{ payment.amount }}</span>
+    </div>
+
+    <div class="payment-row">
+        <strong>Date</strong>
+        <span>{{ payment.payment_date }}</span>
+    </div>
+<form action="/request_correction/{{ payment.id }}" method="post">
+
+<input 
+name="reason"
+placeholder="Why correction needed"
+required>
+
+<button type="submit">
+Request Correction
+</button>
+
+</form>
+
+<hr>
+
+</div>
+
+{% endfor %}
+
+
+</div>
+
+
+<a href="/corrections">
+<button>
+Correction History
+</button>
+</a>
+
+
+
+<br><br>
+
+<a href="/">
+<button class="back-btn">
+Back
+</button>
+</a>
+
+
+</body>
+</html>

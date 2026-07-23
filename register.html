@@ -1,0 +1,74 @@
+<!DOCTYPE>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Register</title>
+
+
+</head>
+<body>
+<h1>Create Kirsov Account</h1>
+
+<form action="/register" method="POST">
+
+    <label>Full Name</label><br>
+    <input
+    type="text"
+    name="full_name"
+    required><br><br>
+
+    <label>Username</label><br>
+    <input
+    type="text"
+    name="username"
+    required><br><br>
+
+    <label>Phone Number</label><br>
+    <input
+    type="text"
+    name="phone"
+    required><br><br>
+
+    <label>Email (Optional)</label><br>
+    <input
+    type="email"
+    name="email"><br><br>
+    
+    <label>Password</label><br>
+    <input
+    type="password"
+    name="password" required><br><br>
+    
+    
+    <label>Confirm Password</label><br>
+    <input
+    type="password"
+    name="confirm_password" required><br><br>
+    
+    <select name="purpose" required>
+
+   <option value="">
+    How will you use Kirsov?
+   </option>
+
+   <option value="Family">
+   Family
+   </option>
+
+   <option value="Personal">
+   Personal
+   </option>
+
+   <option value="Organisation">
+   Organisation
+   </option>
+
+   </select>
+
+    <button type="submit">
+        Create Account
+    </button>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE>
+<html>
+<head>
+
+
+
+<link rel="stylesheet" href="/static/style.css">
+<title>Notice</title>
+
+</head>
+</body>
+
+<h1>Payment Notices</h1><hr><h2>Waiting Notices</h2>{% for notice in notices %}
+{% if notice.status == "waiting" %}
+
+<div class="waiting-box"><h3>Notice #{{ notice.id }}</h3><p><strong>Name:</strong> {{ notice.name }}</p><p><strong>Amount:</strong> ₹{{ notice.amount }}</p>
+<h4>Payment Proof</h4>
+
+<p>
+Transaction ID:
+{{ notice.proof }}
+</p>
+
+{% if notice.proof_image %}
+<a href="/static/uploads/{{ notice.proof_image }}" target="_blank">
+    <img src="/static/uploads/{{ notice.proof_image }}"
+         class="proof-image">
+</a>
+{% endif %}
+<p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Waiting</p><p><strong>Created:</strong> {{ notice.created_at }}</p><a href="/accept_notice/{{ notice.id }}">
+<button type="button">
+Accept
+</button>
+</a><form action="/reject_notice/{{ notice.id }}" method="post"><input
+type="text"
+name="reason"
+placeholder="Reason for rejection"
+required>
+
+<button type="submit">
+Reject
+</button></form></div>{% endif %}
+{% endfor %}
+
+<hr><h2>Accepted Notices</h2>{% for notice in notices %}
+{% if notice.status == "accepted" %}
+
+<div class="accepted-box"><h3>Notice #{{ notice.id }}</h3><p><strong>Name:</strong> {{ notice.name }}</p><p><strong>Amount:</strong> ₹{{ notice.amount }}</p><p><strong>Proof:</strong> {{ notice.proof }}</p><p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Accepted</p><p><strong>Created:</strong> {{ notice.created_at }}</p>
+
+<a href="/delete_notices/{{ notice.id }}"
+   onclick="return confirm('Move this notice to trash?')">
+    <button>Delete</button>
+</a>
+</div>{% endif %}
+
+{% endfor %}
+
+<hr><h2>Rejected Notices</h2>{% for notice in notices %}
+{% if notice.status == "rejected" %}
+
+<div class="rejected-box"><h3>Notice #{{ notice.id }}</h3><p><strong>Name:</strong> {{ notice.name }}</p><p><strong>Amount:</strong> ₹{{ notice.amount }}</p><p><strong>Proof:</strong> {{ notice.proof }}</p><p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Rejected</p><p><strong>Reason:</strong>
+{{ notice.rejection_reason }}
+</p><p><strong>Created:</strong> {{ notice.created_at }}</p>
+
+<a href="/delete_notices/{{ notice.id }}"
+   onclick="return confirm('Move this notice to trash?')">
+    <button>Delete</button>
+</a>
+</div>{%endif%}
+
+{% endfor %}
+
+<a href="/notices_trash">
+    <button>Notices Trash</button>
+</a>
+
+</body>
+</html>

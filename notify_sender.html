@@ -1,0 +1,108 @@
+<!DOCTYPE>
+
+<html>
+<head>
+
+<link rel="stylesheet" href="/static/style.css">
+<title>Notify TO Sender</title>
+
+
+</head>
+<body>
+
+<h2>{{ person.name }}</h2>
+
+<p>Amount : ₹{{ person.amount }}</p>
+
+<p>Paid: ₹{{ person.amount_paid }}</p>
+
+<p>Remaining: ₹{{ person.amount - person.amount_paid }}</p>
+
+<form action="/send_notice/{{ person.id }}"
+      method="post"
+      enctype="multipart/form-data">
+
+    <input
+    type="number"
+    name="amount"
+    placeholder="Amount Paid"
+    required>
+
+    <input
+    type="text"
+    name="proof"
+    placeholder="Transaction ID / Proof (optional)">
+    
+    <input
+type="file"
+name="proof_image"
+accept="image/*">
+    
+    <textarea name="note" placeholder="Note" required></textarea>
+
+    <button type="submit">
+        Notify Sender
+    </button>
+    
+    </form>
+<h3>Waiting Notices</h3>{% for notice in notices %}
+{% if notice.status == "waiting" %}
+
+<div class="waiting-box"><h4>Notice #{{ notice.id }}</h4><p><strong>Amount:</strong> ₹{{ notice.amount }}</p>
+<h4>Payment Proof</h4>
+
+<p>
+Transaction ID:
+{{ notice.proof }}
+</p>
+
+{% if notice.proof_image %}
+<a
+href="/static/uploads/{{ notice.proof_image }}"
+target="_blank">
+
+<img
+src="/static/uploads/{{ notice.proof_image }}"
+style="max-width:300px; max-height:400px;">
+
+</a>
+{% endif %}
+<p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Waiting</p><p>Waiting for sender response...</p>
+
+<a href="/delete_notice_client/{{ notice.id }}"
+   onclick="return confirm('Delete this waiting notice?')">
+   <button type="button">
+      Delete Notice
+   </button>
+</a>
+
+</div>{% endif %}
+{% endfor %}
+
+<h3>Accepted Notices</h3>{% for notice in notices %}
+{% if notice.status == "accepted" %}
+
+<div class="accepted-box"><h4>Notice #{{ notice.id }}</h4><p><strong>Amount:</strong> ₹{{ notice.amount }}</p><p><strong>Proof:</strong> {{ notice.proof }}</p><p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Accepted</p><a href="/payment_history/{{ person.id }}">
+<button type="button">
+View Payment History
+</button>
+</a>
+
+<a href="/timeline/{{ person.id }}">
+<button type="button">
+View Timeline
+</button>
+</a>
+
+</div>{% endif %}
+{% endfor %}
+
+<h3>Rejected Notices</h3>{% for notice in notices %}
+{% if notice.status == "rejected" %}
+
+<div class="rejected-box"><h4>Notice #{{ notice.id }}</h4><p><strong>Amount:</strong> ₹{{ notice.amount }}</p><p><strong>Proof:</strong> {{ notice.proof }}</p><p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Rejected</p><p><strong>Reason:</strong>
+{{ notice.rejection_reason }}
+</p></div>{% endif %}
+{% endfor %}
+</body>
+</html>

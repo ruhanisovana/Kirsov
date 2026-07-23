@@ -1,0 +1,203 @@
+<!DOCTYPE>
+<html>  <head>  <link rel="stylesheet" href="/static/style.css">  <title>Index</title>  </head>  <body>  <h1>💳 Kirsov Smart Payment System</h1>  <a href="/">  
+<button>🏠 Kirsov Home</button>  
+</a>  <div class="hero card">  <h2>  
+Every payment has a story.  
+</h2>  <p>  
+Kirsov keeps your payment journey clear, organized and trusted.  
+</p>  <p>  
+🔐 Your records.  
+📜 Your history.  
+🤝 Your trust.  
+</p>  <p>  
+Track requests, payments and history without confusion.  
+</p>  </div>  <div class="card">  <h3>⚡ Quick Actions</h3>
+
+<a href="/index">
+<button>
+➕ Create Your First Request
+</button>
+</a>
+
+</div>
+
+<a href="/notifications" class="notification-btn">
+    🔔 Notifications
+    {% if unread_count > 0 %}
+        <span class="badge">{{ unread_count }}</span>
+    {% endif %}
+</a>
+
+<a href="/notices">  
+<button type="submit">  
+🔔 Payment Notices  
+</button>  
+</a>  
+<a href="/details">  
+<button>  
+📂 All requests  
+</button>  
+</a>  
+ </div>  
+<div class="dashboard">  <div class="dashboard-card">  
+<h3>Total</h3>  
+<p>{{ total_count }}</p>  
+</div>  <div class="dashboard-card">  
+<h3>Pending</h3>  
+<p>{{ pending_count }}</p>  
+</div>  <div class="dashboard-card">  
+<h3>Progress</h3>  
+<p>{{ progress_count }}</p>  
+</div>  <div class="dashboard-card">  
+<h3>Completed</h3>  
+<p>{{ completed_count }}</p>  
+</div>  <div class="dashboard-card">  
+<h3>Cancelled</h3>  
+<p>{{ cancelled_count }}</p>  
+</div>  </div>  
+
+<h2 id="create-request">  
+➕ Create New Request  
+</h2>  <form action="/add" method="POST">  <input  
+type="text"  
+name="name"  
+placeholder="Name">
+
+<select name="category">  <option value="">  
+Select Category  
+</option>  <option value="Education">  
+Education  
+</option>  <option value="Business">  
+Business  
+</option>  <option value="Service">  
+Service  
+</option>  <option value="Personal">  
+Personal  
+</option>  <option value="Other">  
+Other  
+</option>  </select>  <input  
+type="text"  
+name="phone"  
+placeholder="Phone Number">
+
+<input  
+type="text"  
+name="address"  
+placeholder="Address">
+
+<input  
+type="text"  
+name="amount"  
+placeholder="Amount">
+
+<select  
+name="payment_mode"  
+id="payment_mode"  
+onchange="changePlaceholder()">
+
+<option value="">  
+Select Payment Method  
+</option>  <option value="Digital Wallet">  
+Digital Wallet  
+</option>  <option value="Phone Number">  
+Phone Number  
+</option>  <option value="Bank Transfer">  
+Bank Transfer  
+</option>  <option value="Payment Link">  
+Payment Link  
+</option>  <option value="Cash">  
+Cash  
+</option>  <option value="Other">  
+Other  
+</option>  </select>  <input  
+type="text"  
+name="payment_info"  
+id="payment_info"  
+placeholder="Payment Info">
+
+<select name="status">  <option value="">  
+Select Status  
+</option>  <option value="Pending">  
+Pending  
+</option>  <option value="In Progress">  
+In Progress  
+</option>  <option value="Completed">  
+Completed  
+</option>  <option value="Cancelled">  
+Cancelled  
+</option>  </select>  <label>Deadline</label>
+<input  
+type="date"  
+name="deadline">
+
+<textarea  
+name="message"  
+placeholder="Reminder Message"></textarea>  <input  
+type="text"  
+name="admin_name"  
+placeholder="Sender / Organization Name"  
+required>
+<button type="submit">
+Upload Request
+</button>
+
+</form>
+
+<script>
+
+function changePlaceholder() {
+
+let mode =
+document.getElementById("payment_mode").value;
+
+let info =
+document.getElementById("payment_info");
+
+if (mode === "Digital Wallet") {
+
+info.placeholder =
+"Enter Digital Payment Details";
+
+}
+
+else if (mode === "Phone Number") {
+
+info.placeholder =
+"Enter Payment Number";
+
+}
+
+else if (mode === "Bank Transfer") {
+
+info.placeholder =
+"Enter Bank Details";
+
+}
+
+else if (mode === "Payment Link") {
+
+info.placeholder =
+"Enter Payment Link";
+
+}
+
+else if (mode === "Cash") {
+
+info.placeholder =
+"Cash Payment Details";
+
+}
+
+else {
+
+info.placeholder =
+"Payment Info";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
