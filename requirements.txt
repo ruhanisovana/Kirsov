@@ -1,0 +1,6 @@
+Flask
+cs50
+Werkzeug
+gunicorn
+psycopg2-binary
+

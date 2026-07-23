@@ -1,0 +1,5 @@
+kirsov.db
+__pycache__/
+*.pyc
+.env
+static/uploads/
