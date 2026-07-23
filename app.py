@@ -1813,16 +1813,20 @@ SELECT id, sender_id, admin_name
 FROM requests
 WHERE receiver_id = ?
 """, new_user_id)
+        
 
-    
-    sender = db.execute("""
+    for req in requests:
+
+        
+        sender = db.execute("""
 SELECT full_name
 FROM users
 WHERE id = ?
 """, req["sender_id"])[0]
-        
 
-    for req in requests:
+        if no sender:
+            continue
+
         db.execute("""
     INSERT INTO notifications
     (
