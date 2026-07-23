@@ -1814,17 +1814,33 @@ FROM requests
 WHERE receiver_id = ?
 """, new_user_id)
         
+    user_id = session.get("user_id")
+
+    if user_id:
+        sender = db.execute("""
+    SELECT full_name
+    FROM users
+    WHERE id = ?
+    """, user_id)
+    else:
+        sender = []
+
+    if sender:
+        sender_name = sender[0]["full_name"]
+    else:
+        sender_name = "Someone"
+
+
+    requests = db.execute("""
+SELECT id, sender_id, admin_name
+FROM requests
+WHERE receiver_id = ?
+""", new_user_id)
+
 
     for req in requests:
 
-        
-        sender = db.execute("""
-SELECT full_name
-FROM users
-WHERE id = ?
-""", req["sender_id"])[0]
-
-        if no sender:
+        if req["sender_id"] is None:
             continue
 
         db.execute("""
@@ -1842,11 +1858,11 @@ WHERE id = ?
     req["sender_id"],
     new_user_id,
     req["id"],
-    f'{sender["full_name"]} sent you a payment request.',
+    f"{sender_name} sent you a payment request.",
     "new_request",
     created_at
     )
-    
+
     print(db.execute("""
 SELECT *
 FROM notifications
