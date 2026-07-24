@@ -1890,6 +1890,12 @@ def login_post():
     password = request.form.get(
     "password"
 )
+    print("Username entered:", username)
+
+    print(db.execute("""
+SELECT id, username, phone
+FROM users
+"""))
 
     user = db.execute("""
 SELECT *
