@@ -286,7 +286,7 @@ WHERE phone = ?
     print("Receiver:", receiver)  
     print("Receiver ID:", receiver_id)  
   
-    db.execute("""
+    request_id = db.execute("""
 
 INSERT INTO requests
 (
@@ -322,13 +322,6 @@ message,
 created_at,
 admin_name
 )
-
-    request_id = db.execute(  
-"SELECT last_insert_rowid() AS id"
-
-)[0]["id"]
-
-
     sender = db.execute(  
 "SELECT username FROM users WHERE id = ?",  
 sender_id
