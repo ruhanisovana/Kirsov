@@ -40,7 +40,7 @@ else:
 
 db.execute("""
 CREATE TABLE IF NOT EXISTS requests (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     user_id INTEGER,
     sender_id INTEGER,
     receiver_id INTEGER,
@@ -66,10 +66,10 @@ CREATE TABLE IF NOT EXISTS requests (
 )
 """)
 
-db.execute("""CREATE TABLE IF NOT EXISTS payment_history ( id INTEGER PRIMARY KEY AUTOINCREMENT, request_id INTEGER, amount INTEGER, payment_date TEXT, created_at TEXT, status_flag TEXT DEFAULT 'active', deleted_at TEXT, user_id INTEGER, owner_id INTEGER)""")
+db.execute("""CREATE TABLE IF NOT EXISTS payment_history ( id SERIAL PRIMARY KEY, request_id INTEGER, amount INTEGER, payment_date TEXT, created_at TEXT, status_flag TEXT DEFAULT 'active', deleted_at TEXT, user_id INTEGER, owner_id INTEGER)""")
 
 db.execute("""CREATE TABLE IF NOT EXISTS payment_notices (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     request_id INTEGER,
     amount INTEGER,
     note TEXT,
@@ -87,7 +87,7 @@ db.execute("""CREATE TABLE IF NOT EXISTS payment_notices (
 
 db.execute("""
 CREATE TABLE IF NOT EXISTS feedback (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     user_id INTEGER,
     category TEXT,
     title TEXT,
@@ -97,13 +97,13 @@ CREATE TABLE IF NOT EXISTS feedback (
 )""")
 
 db.execute("""CREATE TABLE IF NOT EXISTS feedback_supports (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     feedback_id INTEGER,
     user_id INTEGER
 )
 """)
 db.execute("""CREATE TABLE IF NOT EXISTS feedback_replies (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     user_id INTEGER,
     feedback_id INTEGER,
     message TEXT,
@@ -112,7 +112,7 @@ db.execute("""CREATE TABLE IF NOT EXISTS feedback_replies (
 
 db.execute("""
 CREATE TABLE IF NOT EXISTS notifications (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     sender_id INTEGER,
     receiver_id INTEGER,
     request_id INTEGER,
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS notifications (
 """)
 
 db.execute("""CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     full_name TEXT NOT NULL,
     phone TEXT UNIQUE NOT NULL,
@@ -136,7 +136,7 @@ db.execute("""CREATE TABLE IF NOT EXISTS users (
 
 db.execute("""
 CREATE TABLE IF NOT EXISTS payment_corrections (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     request_id INTEGER,
     payment_id INTEGER,
     from_user_id INTEGER,
