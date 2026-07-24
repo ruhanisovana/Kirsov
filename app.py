@@ -300,12 +300,13 @@ address,
 amount,
 payment_mode,
 payment_info,
+status
 deadline,
 message,
 created_at,
 admin_name
 )
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 """,
 session["user_id"],
 sender_id,
@@ -317,6 +318,7 @@ address,
 amount,
 payment_mode,
 payment_info,
+status
 deadline,
 message,
 created_at,
