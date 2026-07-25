@@ -721,6 +721,7 @@ def send_notice(id):
     if proof_image and proof_image.filename:
         filename = secure_filename(proof_image.filename)
         proof_image.save(
+            os.makedirs("static/uploads", exist_ok=True)
                
         )
 
@@ -739,7 +740,7 @@ def send_notice(id):
 
     owner = request_data[0]["user_id"]
 
-    db.execute("""
+    notice_id = db.execute("""
     INSERT INTO payment_notices
     (
     request_id,
@@ -769,7 +770,7 @@ WHERE id = ?
     
     
     
-    notice_id = db.execute("""
+    db.execute("""
 INSERT INTO notifications
 (sender_id, receiver_id, request_id, message, type, created_at)
 VALUES (?, ?, ?, ?, ?, ?)
