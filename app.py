@@ -721,19 +721,23 @@ def send_notice(id):
     if proof_image and proof_image.filename:
         filename = secure_filename(proof_image.filename)
         proof_image.save(
-               os.path.join("static/uploads", filename)
+               
         )
 
     created_at = datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"
     )
     
-    owner = db.execute(
+    request_id = db.execute(
     "SELECT user_id FROM requests WHERE id = ?",
     id
 )[0]["user_id"]
 
+    
+    if not request_data:
+        return "Request not found."
 
+    owner = request_data[0]["user_id"]
 
     db.execute("""
     INSERT INTO payment_notices
@@ -765,7 +769,7 @@ WHERE id = ?
     
     
     
-    db.execute("""
+    notice_id = db.execute("""
 INSERT INTO notifications
 (sender_id, receiver_id, request_id, message, type, created_at)
 VALUES (?, ?, ?, ?, ?, ?)
@@ -778,10 +782,6 @@ f'{sender["full_name"]} sent a new notice',
 datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 )
     
-    notice_id = db.execute(
-    "SELECT last_insert_rowid() AS id"
-)[0]["id"]
-
     return render_template(
     "send_notice.html",
     request_id=id
