@@ -749,7 +749,11 @@ def send_notice(id):
 
     if proof_image and proof_image.filename:
         filename = secure_filename(proof_image.filename)
-        filepath = os.path.join("static/uploads", filename)
+
+        os.makedirs("static/uploads", exist_ok=True)
+
+        filepath = os.path.join("static", "uploads", filename)
+
         proof_image.save(filepath)
     created_at = datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"
