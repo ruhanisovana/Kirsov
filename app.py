@@ -999,7 +999,7 @@ def reject_notice(id):
     id
 )
 
-    in not notices:
+    if not notices:
         return "Notice not found"
         
     notice = notices[0]
