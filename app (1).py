@@ -1,4 +1,4 @@
-import oss
+import os
 
 BASE_URL = os.getenv("KIRSOV_URL", "")
 
