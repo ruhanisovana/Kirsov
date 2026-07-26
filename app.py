@@ -427,13 +427,6 @@ def edit(id):
         
     person = person[0]
     
-    if not person:
-        return "Not found"
-        
-    person = person[0]
-    
-    
-
     return render_template(
         "edit.html",
         person=person
