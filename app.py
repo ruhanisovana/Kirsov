@@ -879,12 +879,6 @@ notice["request_id"]
         return "Not found"
         
     request_row = request_rows[0]
-
-   
-    if not request_row:
-        return "Request not found"
-
-    request_row = request_row[0]
     
     
     db.execute("""
