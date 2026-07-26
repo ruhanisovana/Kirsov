@@ -1914,8 +1914,6 @@ SELECT id, sender_id, admin_name
 FROM requests
 WHERE receiver_id = ?
 """, new_user_id)
-        
-    user_id = session.get("user_id")
 
     requests = db.execute("""
 SELECT id, sender_id, admin_name
@@ -1934,6 +1932,9 @@ SELECT full_name
 FROM users
 WHERE id = ?
 """, req["sender_id"])
+
+        if not sender:
+            continue 
 
         sender_name = sender[0]["full_name"]
 
