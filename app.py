@@ -1615,7 +1615,7 @@ def feedback():
         SELECT
         feedback.*,
         users.username,
-        COUNT(feedback_supports.id) AS supports
+        COUNT(feedback_supports.id) AS supports_count
 
 
         FROM feedback
@@ -1632,7 +1632,7 @@ def feedback():
         GROUP BY feedback.id
 
 
-        ORDER BY supports DESC, feedback.id DESC
+        ORDER BY supports_count DESC, feedback.id DESC
         """)
 
     bug_count = db.execute("""
