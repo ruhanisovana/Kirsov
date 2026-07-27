@@ -1705,8 +1705,7 @@ def add_feedback():
     title = request.form.get("title")
     message = request.form.get("message")
 
-    created_at = 
-datetime.now().strftime(
+    created_at = datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"
     )
 
