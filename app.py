@@ -1629,7 +1629,15 @@ def feedback():
         ON feedback.id = feedback_supports.feedback_id
 
 
-        GROUP BY feedback.id
+        
+        GROUP BY
+        feedback.id,
+        feedback.user_id,
+        feedback.category,
+        feedback.title,
+        feedback.message,
+        feedback.created_at,
+        users.username
 
 
         ORDER BY supports_count DESC, feedback.id DESC
