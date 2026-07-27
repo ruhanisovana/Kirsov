@@ -770,6 +770,9 @@ def send_notice(id):
 
     owner = request_data[0]["user_id"]
 
+    print(type(image_data))
+    print(len(image_data) if image_data else "None")
+
     notice_id = db.execute("""
     INSERT INTO payment_notices
     (
@@ -2587,6 +2590,7 @@ def notice_image(id):
         FROM payment_notices
         WHERE id = ?
     """, id)
+    print(row)
 
     if not row or row[0]["proof_image_data"] is None:
         return "No image", 404
