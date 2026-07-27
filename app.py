@@ -147,6 +147,10 @@ CREATE TABLE IF NOT EXISTS payment_corrections (
     created_at TEXT
 )
 """)
+db.execute("""
+ALTER TABLE payment_notices
+ADD COLUMN IF NOT EXISTS proof_image_data BYTEA
+""")
 @app.route("/")
 def home():
 
