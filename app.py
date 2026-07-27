@@ -1582,7 +1582,7 @@ def feedback():
         SELECT
         feedback.*,
         users.username,
-        COUNT(feedback_supports.id) AS supports
+        COUNT(feedback_supports.id) AS supports_count
 
 
         FROM feedback
@@ -1599,10 +1599,16 @@ def feedback():
         WHERE feedback.category = ?
 
 
-        GROUP BY feedback.id
+        GROUP BY feedback.id,
+        feedback.user_id,
+        feedback.category,
+        feedback.title,
+        feedback.message,
+        feedback.created_at,
+        users.username
 
 
-        ORDER BY supports DESC, feedback.id DESC
+        ORDER BY supports_count DESC, feedback.id DESC
         """, category)
 
 
@@ -1699,7 +1705,8 @@ def add_feedback():
     title = request.form.get("title")
     message = request.form.get("message")
 
-    created_at = datetime.now().strftime(
+    created_at = 
+datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"
     )
 
