@@ -750,15 +750,11 @@ def send_notice(id):
           return "Please provide a transaction ID or screenshot."
     
     filename = ""
+    image_data = None
 
     if proof_image and proof_image.filename:
         filename = secure_filename(proof_image.filename)
-
-        os.makedirs("static/uploads", exist_ok=True)
-
-        filepath = os.path.join("static", "uploads", filename)
-
-        proof_image.save(filepath)
+        image_data = proof_image.read()
     created_at = datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"
     )
@@ -777,25 +773,26 @@ def send_notice(id):
     notice_id = db.execute("""
     INSERT INTO payment_notices
     (
-    request_id,
-    amount,
-    proof,
-    proof_image,
-    note,
-    created_at,
-    owner_id
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-    """,
-    id,
-    amount,
-    proof,
-    filename,
-    note,
-    created_at,
-    owner)
-    
-    
+request_id,
+amount,
+proof,
+proof_image,
+proof_image_data,
+note,
+created_at,
+owner_id
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+""",
+id,
+amount,
+proof,
+filename,
+image_data,
+note,
+created_at,
+owner)
+                               
     sender = db.execute("""
 SELECT full_name
 FROM users
@@ -2581,6 +2578,24 @@ def shared_request(id):
         remaining=remaining,
         overpaid=overpaid
     )
+    from flask import Response
+
+@app.route("/notice_image/<int:id>")
+def notice_image(id):
+    row = db.execute("""
+        SELECT proof_image_data
+        FROM payment_notices
+        WHERE id = ?
+    """, id)
+
+    if not row or row[0]["proof_image_data"] is None:
+        return "No image", 404
+
+    return Response(
+        row[0]["proof_image_data"],
+        mimetype="image/jpeg"
+    )
+
   
 if __name__ == "__main__":
     import traceback
