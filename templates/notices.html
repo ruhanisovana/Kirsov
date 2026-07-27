@@ -21,9 +21,9 @@ Transaction ID:
 {{ notice.proof }}
 </p>
 
-{% if notice.proof_image %}
-<a href="/static/uploads/{{ notice.proof_image }}" target="_blank">
-    <img src="/notice_image/{{ notice.id }}">
+{% if notice.proof_image_data %}
+<a href="/notice_image/{{ notice.id }}" target="_blank">
+    <img src="/notice_image/{{ notice.id }}" width="200">
 </a>
 {% endif %}
 <p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Waiting</p><p><strong>Created:</strong> {{ notice.created_at }}</p><a href="/accept_notice/{{ notice.id }}">
