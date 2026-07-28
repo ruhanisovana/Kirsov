@@ -123,16 +123,18 @@ CREATE TABLE IF NOT EXISTS notifications (
 )
 """)
 
-db.execute("""CREATE TABLE IF NOT EXISTS users (
+db.execute("""
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    username TEXT UNIQUE NOT NULL,
+    username TEXT NOT NULL,
     full_name TEXT NOT NULL,
     phone TEXT UNIQUE NOT NULL,
-    email TEXT UNIQUE,
+    email TEXT,
     password_hash TEXT NOT NULL,
     created_at TEXT NOT NULL,
     purpose TEXT
-)""")
+)
+""")
 
 db.execute("""
 CREATE TABLE IF NOT EXISTS payment_corrections (
