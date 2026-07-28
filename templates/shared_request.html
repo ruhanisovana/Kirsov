@@ -390,14 +390,14 @@ Current Status:
     <p><strong>Reason:</strong> {{ notice.rejection_reason }}</p>
      {% endif %}
 
-        {% if notice.proof_image %}
+        {% if notice.proof_image_data %}
         <div class="proof-box">
             <strong>Proof Screenshot</strong><br><br>
 
             <a href="/notice_image/{{ notice.id }}" target="_blank">
                <img src="/notice_image/{{ notice.id }}" width="200">
             </a>
-            </a>
+            
         </div>
         {% endif %}
 
