@@ -44,12 +44,15 @@ Reject
 <hr><h2>Accepted Notices</h2>{% for notice in notices %}
 {% if notice.status == "accepted" %}
 
-<div class="accepted-box"><h3>Notice #{{ notice.id }}</h3><p><strong>Name:</strong> {{ notice.name }}</p><p><strong>Amount:</strong> ₹{{ notice.amount }}</p><p><strong>Proof:</strong> {{ notice.proof }}</p><p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Accepted</p><p><strong>Created:</strong> {{ notice.created_at }}</p>
-
-<a href="/delete_notices/{{ notice.id }}"
-   onclick="return confirm('Move this notice to trash?')">
-    <button>Delete</button>
+<div class="accepted-box"><h3>Notice #{{ notice.id }}</h3><p><strong>Name:</strong> {{ notice.name }}</p><p><strong>Amount:</strong> ₹{{ notice.amount }}</p><p><strong>Proof:</strong> {{ notice.proof }}</p>
+    
+{% if notice.proof_image_data %}
+<a href="/notice_image/{{ notice.id }}" target="_blank">
+    <img src="/notice_image/{{ notice.id }}" width="200">
 </a>
+{% endif %}
+    <p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Accepted</p><p><strong>Created:</strong> {{ notice.created_at }}</p>
+
 </div>{% endif %}
 
 {% endfor %}
@@ -57,21 +60,21 @@ Reject
 <hr><h2>Rejected Notices</h2>{% for notice in notices %}
 {% if notice.status == "rejected" %}
 
-<div class="rejected-box"><h3>Notice #{{ notice.id }}</h3><p><strong>Name:</strong> {{ notice.name }}</p><p><strong>Amount:</strong> ₹{{ notice.amount }}</p><p><strong>Proof:</strong> {{ notice.proof }}</p><p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Rejected</p><p><strong>Reason:</strong>
+<div class="rejected-box"><h3>Notice #{{ notice.id }}</h3><p><strong>Name:</strong> {{ notice.name }}</p><p><strong>Amount:</strong> ₹{{ notice.amount }}</p><p><strong>Proof:</strong>{{ notice.proof }}
+</p>
+{% if notice.proof_image_data %}
+<a href="/notice_image/{{ notice.id }}" target="_blank">
+    <img src="/notice_image/{{ notice.id }}" width="200">
+</a>
+{% endif %}
+    
+    <p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Rejected</p><p><strong>Reason:</strong>
 {{ notice.rejection_reason }}
 </p><p><strong>Created:</strong> {{ notice.created_at }}</p>
 
-<a href="/delete_notices/{{ notice.id }}"
-   onclick="return confirm('Move this notice to trash?')">
-    <button>Delete</button>
-</a>
 </div>{%endif%}
 
 {% endfor %}
-
-<a href="/notices_trash">
-    <button>Notices Trash</button>
-</a>
 
 </body>
 </html>
