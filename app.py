@@ -2599,6 +2599,35 @@ def notice_image(id):
         mimetype="image/jpeg"
     )
 
+@app.route("/reset_users")
+def reset_users():
+
+    db.execute("DELETE FROM feedback_replies")
+    db.execute("DELETE FROM feedback_supports")
+    db.execute("DELETE FROM feedback")
+    db.execute("DELETE FROM notifications")
+    db.execute("DELETE FROM payment_history")
+    db.execute("DELETE FROM payment_notices")
+    db.execute("DELETE FROM requests")
+    db.execute("DELETE FROM users")
+
+    return "All users deleted."
+
+@app.route("/remove_unique")
+def remove_unique():
+
+    db.execute("""
+    ALTER TABLE users
+    DROP CONSTRAINT IF EXISTS users_username_key
+    """)
+
+    db.execute("""
+    ALTER TABLE users
+    DROP CONSTRAINT IF EXISTS users_email_key
+    """)
+
+    return "Username and email are no longer unique."
+
   
 if __name__ == "__main__":
     import traceback
