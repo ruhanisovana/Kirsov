@@ -385,6 +385,10 @@ Current Status:
             <span>{{ notice.created_at }}</span>
         </div>
         {% endif %}
+        {% if notice.status == "rejected" %}
+    <p><strong>Status:</strong> Rejected</p>
+    <p><strong>Reason:</strong> {{ notice.rejection_reason }}</p>
+     {% endif %}
 
         {% if notice.proof_image %}
         <div class="proof-box">
