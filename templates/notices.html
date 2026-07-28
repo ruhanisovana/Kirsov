@@ -68,9 +68,11 @@ Reject
 </a>
 {% endif %}
     
-    <p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Rejected</p><p><strong>Reason:</strong>
+    <p><strong>Note:</strong> {{ notice.note }}</p><p><strong>Status:</strong> Rejected</p>
+    <p><strong>Reason:</strong>
 {{ notice.rejection_reason }}
-</p><p><strong>Created:</strong> {{ notice.created_at }}</p>
+</p>
+    <p><strong>Created:</strong> {{ notice.created_at }}</p>
 
 </div>{%endif%}
 
