@@ -390,9 +390,9 @@ Current Status:
         <div class="proof-box">
             <strong>Proof Screenshot</strong><br><br>
 
-            <a href="/static/uploads/{{ notice.proof_image }}" target="_blank">
-                <img src="/static/uploads/{{ notice.proof_image }}"
-                     class="proof-image">
+            <a href="/notice_image/{{ notice.id }}" target="_blank">
+               <img src="/notice_image/{{ notice.id }}" width="200">
+            </a>
             </a>
         </div>
         {% endif %}
