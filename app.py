@@ -2,7 +2,7 @@ import os
 
 BASE_URL = os.getenv("KIRSOV_URL", "")
 
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, Response
 from cs50 import SQL
 from datetime import datetime
 from werkzeug.security import (
@@ -2581,7 +2581,6 @@ def shared_request(id):
         remaining=remaining,
         overpaid=overpaid
     )
-    from flask import Response
 
 @app.route("/notice_image/<int:id>")
 def notice_image(id):
