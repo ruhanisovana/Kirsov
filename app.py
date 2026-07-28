@@ -1554,7 +1554,7 @@ VALUES (?, ?, ?, ?, ?, ?)
 session["user_id"],
 request_row["receiver_id"],
 notice["request_id"],
-f'{sender["full_name"]} has deleted your notice.',
+f'{sender["full_name"]} has deleted waiting notice.',
 "notice_accepted",
 datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 )
