@@ -1,55 +1,160 @@
-<!DOCTYPE>
-<html>
-  <head>
-    <title>Payment Settings</title>
-  </head>
-  <body>
-    <h1>Payment Settings</h1>
+<!DOCTYPE html>
 
-<form action="/save_payment_settings" method="post" enctype="multipart/form-data">
+<html>
+
+<head>
+
+<link rel="stylesheet" href="/static/style.css">
+
+<title>Payment Settings</title>
+
+</head>
+
+<body>
+
+<h1>💳 Payment Settings</h1>
+
+<form
+action="/save_payment_settings"
+method="post"
+enctype="multipart/form-data">
+
+<label>
+
+Payment Method
+
+</label>
+
+<br><br>
 
 <select name="payment_mode">
 
-<option value="UPI">UPI</option>
+<option value="UPI">
+UPI
+</option>
 
-<option value="PhonePe">PhonePe</option>
+<option value="PhonePe">
+PhonePe
+</option>
 
-<option value="Google Pay">Google Pay</option>
+<option value="Google Pay">
+Google Pay
+</option>
 
-<option value="Paytm">Paytm</option>
+<option value="Paytm">
+Paytm
+</option>
 
-<option value="Bank Account">Bank Account</option>
+<option value="Bank Account">
+Bank Account
+</option>
 
-<option value="PayPal">PayPal</option>
+<option value="PayPal">
+PayPal
+</option>
 
-<option value="Cash">Cash</option>
+<option value="Cash">
+Cash
+</option>
 
-<option value="Other">Other</option>
+<option value="Other">
+Other
+</option>
 
 </select>
 
+<br><br>
+
 <input
+
 type="text"
+
 name="payment_info"
-placeholder="UPI ID / Number / Account"
+
+placeholder="UPI ID / Phone Number / Bank Details"
+
 value="{{ setting.payment_info if setting else '' }}">
 
+<br><br>
+
+<label>
+
+Upload QR Code (Optional)
+
+</label>
+
+<br><br>
+
 <input
+
 type="file"
+
 name="qr_image">
 
+<br><br>
+
 <button type="submit">
-Save
+
+💾 Save Payment Settings
+
 </button>
 
 </form>
 
-{% if setting and setting.qr_image %}
+<hr>
 
-<img
-src="/payment_qr/{{ session['user_id'] }}"
-width="200">
+<h2>
 
-{% endif %}
-  </body>
+Don't have a digital wallet?
+
+</h2>
+
+<a href="https://play.google.com/store/apps/details?id=com.phonepe.app">
+
+<button>
+
+📱 Download PhonePe
+
+</button>
+
+</a>
+
+<br><br>
+
+<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user">
+
+<button>
+
+📱 Download Google Pay
+
+</button>
+
+</a>
+
+<br><br>
+
+<a href="https://play.google.com/store/apps/details?id=net.one97.paytm">
+
+<button>
+
+📱 Download Paytm
+
+</button>
+
+</a>
+
+<br><br>
+
+<a href="https://play.google.com/store/apps/details?id=in.org.npci.upiapp">
+
+<button>
+
+📱 Download BHIM UPI
+
+</button>
+
+</a>
+
+</body>
+
 </html>
