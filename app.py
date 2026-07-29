@@ -273,8 +273,18 @@ def add():
 
     amount = request.form.get("amount")  
 
-    payment_mode = request.form.get("payment_mode")  
-    payment_info = request.form.get("payment_info")  
+    payment = db.execute("""
+SELECT payment_mode, payment_info
+FROM payment_settings
+WHERE user_id = ?
+""", session["user_id"])
+
+    if payment:
+        payment_mode = payment[0]["payment_mode"]
+        payment_info = payment[0]["payment_info"]
+    else:
+        payment_mode = ""
+        payment_info = ""
   
     status = request.form.get("status")  
   
