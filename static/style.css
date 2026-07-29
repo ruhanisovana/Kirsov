@@ -1315,55 +1315,106 @@ button:hover{
     font-weight:bold;
 }
 
-/* Payment Settings */
 
-body{
-    background:#f5f7fb;
-    color:#222;
-    font-family:Arial, sans-serif;
-    font-size:20px;
-    padding:20px;
+.settings-container{
+
+    max-width:650px;
+
+    margin:30px auto;
+
+    padding:30px;
+
+    background:#ffffff;
+
+    border-radius:18px;
+
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+
 }
 
-h1{
+.settings-container h1{
+
     font-size:36px;
+
     text-align:center;
-    margin-bottom:20px;
+
+    margin-bottom:25px;
+
+    color:#222;
+
 }
 
-h2{
+.settings-container h2{
+
     font-size:28px;
-    margin-top:30px;
+
+    margin-top:35px;
+
+    margin-bottom:15px;
+
+    color:#222;
+
 }
 
-p{
+.settings-container p{
+
     font-size:20px;
+
     line-height:1.7;
+
+    color:#444;
+
 }
 
-label{
+.settings-container label{
+
     font-size:22px;
+
     font-weight:bold;
+
+    color:#222;
+
 }
 
-input,
-select,
-textarea{
+.settings-container input,
+
+.settings-container select,
+
+.settings-container textarea{
 
     width:100%;
+
     padding:16px;
+
     font-size:20px;
 
     border:1px solid #cccccc;
+
     border-radius:12px;
 
     margin-top:8px;
-    margin-bottom:18px;
+
+    margin-bottom:20px;
 
     box-sizing:border-box;
+
+    background:#fafafa;
+
 }
 
-button{
+.settings-container input:focus,
+
+.settings-container select:focus,
+
+.settings-container textarea:focus{
+
+    outline:none;
+
+    border-color:#4a90e2;
+
+}
+
+.settings-container button{
 
     width:100%;
 
@@ -1377,32 +1428,50 @@ button{
 
     border-radius:14px;
 
-    background:#3b82f6;
+    background:#4a90e2;
 
     color:white;
 
     cursor:pointer;
 
-    margin-top:10px;
+    margin-top:12px;
+
+    transition:.2s;
+
 }
 
-button:hover{
+.settings-container button:hover{
 
-    background:#2563eb;
+    background:#3578d4;
+
 }
 
-img{
+.settings-container img{
 
     width:220px;
 
+    display:block;
+
+    margin:20px auto;
+
     border-radius:12px;
 
-    margin-top:15px;
-
     border:2px solid #dddddd;
+
 }
 
-hr{
+.settings-container hr{
 
     margin:35px 0;
+
+    border:none;
+
+    border-top:1px solid #dddddd;
+
+}
+
+.settings-container a{
+
+    text-decoration:none;
+
 }
