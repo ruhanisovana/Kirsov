@@ -1,0 +1,55 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <title>Payment Settings</title>
+  </head>
+  <body>
+    <h1>Payment Settings</h1>
+
+<form action="/save_payment_settings" method="post" enctype="multipart/form-data">
+
+<select name="payment_mode">
+
+<option value="UPI">UPI</option>
+
+<option value="PhonePe">PhonePe</option>
+
+<option value="Google Pay">Google Pay</option>
+
+<option value="Paytm">Paytm</option>
+
+<option value="Bank Account">Bank Account</option>
+
+<option value="PayPal">PayPal</option>
+
+<option value="Cash">Cash</option>
+
+<option value="Other">Other</option>
+
+</select>
+
+<input
+type="text"
+name="payment_info"
+placeholder="UPI ID / Number / Account"
+value="{{ setting.payment_info if setting else '' }}">
+
+<input
+type="file"
+name="qr_image">
+
+<button type="submit">
+Save
+</button>
+
+</form>
+
+{% if setting and setting.qr_image %}
+
+<img
+src="/payment_qr/{{ session['user_id'] }}"
+width="200">
+
+{% endif %}
+  </body>
+</html>
