@@ -2660,6 +2660,14 @@ def payment_qr(user_id):
         mimetype="image/jpeg"
     )
 
+@app.route("/settings")
+def settings():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    return render_template("settings.html")
+
 
 
 
