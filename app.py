@@ -39,6 +39,16 @@ else:
     db = SQL("sqlite:///kirsov.db")
 
 db.execute("""
+CREATE TABLE IF NOT EXISTS payment_settings (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER UNIQUE NOT NULL,
+    payment_mode TEXT,
+    payment_info TEXT,
+    qr_image BYTEA
+)
+""")
+
+db.execute("""
 CREATE TABLE IF NOT EXISTS requests (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
@@ -2600,6 +2610,47 @@ def notice_image(id):
         row[0]["proof_image_data"],
         mimetype="image/jpeg"
     )
+
+@app.route("/payment_settings")
+def payment_settings():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    setting = db.execute("""
+    SELECT *
+    FROM payment_settings
+    WHERE user_id = ?
+    """, session["user_id"])
+
+    if setting:
+        setting = setting[0]
+    else:
+        setting = None
+
+    return render_template(
+        "payment_settings.html",
+        setting=setting
+    )
+
+@app.route("/payment_qr/<int:user_id>")
+def payment_qr(user_id):
+
+    row = db.execute("""
+    SELECT qr_image
+    FROM payment_settings
+    WHERE user_id = ?
+    """, user_id)
+
+    if not row or not row[0]["qr_image"]:
+        return "No QR"
+
+    return Response(
+        row[0]["qr_image"],
+        mimetype="image/jpeg"
+    )
+
+
 
 
   
