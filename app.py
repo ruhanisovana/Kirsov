@@ -2659,18 +2659,6 @@ def payment_qr(user_id):
         row[0]["qr_image"],
         mimetype="image/jpeg"
     )
-
-@app.route("/settings")
-def settings():
-
-    if "user_id" not in session:
-        return redirect("/login")
-
-    return render_template("settings.html")
-
-
-
-
   
 if __name__ == "__main__":
     import traceback
