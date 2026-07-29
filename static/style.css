@@ -1314,3 +1314,95 @@ button:hover{
     text-align:center;
     font-weight:bold;
 }
+
+/* Payment Settings */
+
+body{
+    background:#f5f7fb;
+    color:#222;
+    font-family:Arial, sans-serif;
+    font-size:20px;
+    padding:20px;
+}
+
+h1{
+    font-size:36px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+h2{
+    font-size:28px;
+    margin-top:30px;
+}
+
+p{
+    font-size:20px;
+    line-height:1.7;
+}
+
+label{
+    font-size:22px;
+    font-weight:bold;
+}
+
+input,
+select,
+textarea{
+
+    width:100%;
+    padding:16px;
+    font-size:20px;
+
+    border:1px solid #cccccc;
+    border-radius:12px;
+
+    margin-top:8px;
+    margin-bottom:18px;
+
+    box-sizing:border-box;
+}
+
+button{
+
+    width:100%;
+
+    padding:16px;
+
+    font-size:21px;
+
+    font-weight:bold;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#3b82f6;
+
+    color:white;
+
+    cursor:pointer;
+
+    margin-top:10px;
+}
+
+button:hover{
+
+    background:#2563eb;
+}
+
+img{
+
+    width:220px;
+
+    border-radius:12px;
+
+    margin-top:15px;
+
+    border:2px solid #dddddd;
+}
+
+hr{
+
+    margin:35px 0;
+}
