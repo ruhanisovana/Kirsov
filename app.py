@@ -65,22 +65,6 @@ CREATE TABLE IF NOT EXISTS requests (
 
 )
 """)
-db.execute("""
-CREATE TABLE IF NOT EXISTS payment_settings (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER UNIQUE,
-    upi_id TEXT,
-    phonepe TEXT,
-    googlepay TEXT,
-    paytm TEXT,
-    bank_name TEXT,
-    account_name TEXT,
-    account_number TEXT,
-    ifsc TEXT,
-    paypal TEXT,
-    cash_enabled BOOLEAN DEFAULT TRUE
-)
-""")
 
 db.execute("""CREATE TABLE IF NOT EXISTS payment_history ( id SERIAL PRIMARY KEY, request_id INTEGER, amount INTEGER, payment_date TEXT, created_at TEXT, status_flag TEXT DEFAULT 'active', deleted_at TEXT, user_id INTEGER, owner_id INTEGER)""")
 
