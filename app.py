@@ -38,7 +38,7 @@ if DATABASE_URL:
 else:
     db = SQL("sqlite:///kirsov.db")
 
-db.exdb.execute("""
+db.execute("""
 CREATE TABLE IF NOT EXISTS requests (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
