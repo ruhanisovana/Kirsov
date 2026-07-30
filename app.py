@@ -38,17 +38,7 @@ if DATABASE_URL:
 else:
     db = SQL("sqlite:///kirsov.db")
 
-db.execute("""
-CREATE TABLE IF NOT EXISTS payment_settings (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER UNIQUE NOT NULL,
-    payment_mode TEXT,
-    payment_info TEXT,
-    qr_image BYTEA
-)
-""")
-
-db.execute("""
+db.exdb.execute("""
 CREATE TABLE IF NOT EXISTS requests (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
@@ -72,10 +62,19 @@ CREATE TABLE IF NOT EXISTS requests (
     version INTEGER DEFAULT 1,
     edited_at TEXT,
     edited_by INTEGER
-
 )
 """)
 
+db.execute("""
+CREATE TABLE IF NOT EXISTS payment_settings (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER UNIQUE,
+    payment_mode TEXT,
+    payment_info TEXT,
+    qr_image TEXT,
+    qr_image_data BYTEA
+)
+""")
 db.execute("""CREATE TABLE IF NOT EXISTS payment_history ( id SERIAL PRIMARY KEY, request_id INTEGER, amount INTEGER, payment_date TEXT, created_at TEXT, status_flag TEXT DEFAULT 'active', deleted_at TEXT, user_id INTEGER, owner_id INTEGER)""")
 
 db.execute("""CREATE TABLE IF NOT EXISTS payment_notices (
@@ -2659,6 +2658,70 @@ def payment_qr(user_id):
         row[0]["qr_image"],
         mimetype="image/jpeg"
     )
+
+@app.route("/save_payment_settings", methods=["POST"])
+def save_payment_settings():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    payment_mode = request.form.get("payment_mode")
+    payment_info = request.form.get("payment_info")
+
+    qr = request.files.get("qr_image")
+
+    qr_filename = ""
+    qr_data = None
+
+    if qr and qr.filename:
+
+        qr_filename = secure_filename(qr.filename)
+
+        qr_data = qr.read()
+
+    existing = db.execute("""
+    SELECT id
+    FROM payment_settings
+    WHERE user_id = ?
+    """, session["user_id"])
+
+    if existing:
+
+        db.execute("""
+        UPDATE payment_settings
+        SET
+        payment_mode = ?,
+        payment_info = ?,
+        qr_image = ?,
+        qr_image_data = ?
+        WHERE user_id = ?
+        """,
+        payment_mode,
+        payment_info,
+        qr_filename,
+        qr_data,
+        session["user_id"])
+
+    else:
+
+        db.execute("""
+        INSERT INTO payment_settings
+        (
+        user_id,
+        payment_mode,
+        payment_info,
+        qr_image,
+        qr_image_data
+        )
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        session["user_id"],
+        payment_mode,
+        payment_info,
+        qr_filename,
+        qr_data)
+
+    return redirect("/payment_settings")
   
 if __name__ == "__main__":
     import traceback
