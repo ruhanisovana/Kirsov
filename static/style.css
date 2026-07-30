@@ -1475,3 +1475,23 @@ button:hover{
     text-decoration:none;
 
 }
+
+.settings-container select{
+
+    color:#222 !important;
+
+    background:#ffffff !important;
+
+    font-size:20px;
+
+    font-weight:bold;
+}
+
+.settings-container select option{
+
+    color:#222 !important;
+
+    background:#ffffff !important;
+
+    font-size:20px;
+}
