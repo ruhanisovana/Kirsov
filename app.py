@@ -71,8 +71,7 @@ CREATE TABLE IF NOT EXISTS payment_settings (
     user_id INTEGER UNIQUE,
     payment_mode TEXT,
     payment_info TEXT,
-    qr_image TEXT,
-    qr_image_data BYTEA
+    qr_image TEXT
 )
 """)
 db.execute("""CREATE TABLE IF NOT EXISTS payment_history ( id SERIAL PRIMARY KEY, request_id INTEGER, amount INTEGER, payment_date TEXT, created_at TEXT, status_flag TEXT DEFAULT 'active', deleted_at TEXT, user_id INTEGER, owner_id INTEGER)""")
@@ -2706,14 +2705,12 @@ def save_payment_settings():
         SET
         payment_mode = ?,
         payment_info = ?,
-        qr_image = ?,
-        qr_image_data = ?
+        qr_image = ?
         WHERE user_id = ?
         """,
         payment_mode,
         payment_info,
-        qr_filename,
-        qr_data,
+        qr_filename
         session["user_id"])
 
     else:
@@ -2724,16 +2721,14 @@ def save_payment_settings():
         user_id,
         payment_mode,
         payment_info,
-        qr_image,
-        qr_image_data
+        qr_image
         )
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?)
         """,
         session["user_id"],
         payment_mode,
         payment_info,
-        qr_filename,
-        qr_data)
+        qr_filename)
 
     return redirect("/payment_settings")
   
