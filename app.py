@@ -2658,22 +2658,6 @@ def payment_settings():
         setting=setting
     )
 
-@app.route("/payment_qr/<int:user_id>")
-def payment_qr(user_id):
-
-    row = db.execute("""
-    SELECT qr_image
-    FROM payment_settings
-    WHERE user_id = ?
-    """, user_id)
-
-    if not row or not row[0]["qr_image"]:
-        return "No QR"
-
-    return Response(
-        row[0]["qr_image"],
-        mimetype="image/jpeg"
-    )
 
 @app.route("/save_payment_settings", methods=["POST"])
 def save_payment_settings():
