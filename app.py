@@ -2681,7 +2681,7 @@ def save_payment_settings():
     payment_mode = request.form.get("payment_mode")
     payment_info = request.form.get("payment_info")
 
-     setting = db.execute("""
+    setting = db.execute("""
     SELECT qr_image
     FROM payment_settings
     WHERE user_id = ?
