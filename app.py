@@ -2710,7 +2710,7 @@ def save_payment_settings():
         """,
         payment_mode,
         payment_info,
-        qr_filename
+        qr_filename,
         session["user_id"])
 
     else:
