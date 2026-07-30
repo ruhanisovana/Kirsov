@@ -23,7 +23,6 @@ upload_folder = "static/qr_codes"
 
 os.makedirs("static/uploads", exist_ok=True)
 
-qr.save(os.path.join(upload_folder, filename))
 app.config["SESSION_COOKIE_NAME"] = "kirsov_session"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
