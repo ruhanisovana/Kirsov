@@ -2691,7 +2691,10 @@ def save_payment_settings():
 
     if qr and qr.filename:
         filename = secure_filename(qr.filename)
-        qr.save(os.path.join("static/qr_codes", filename))
+        upload_folder = os.path.join(app.root_path, "static", "qr_codes")
+        os.makedirs(upload_folder, exist_ok=True)
+
+        qr.save(os.path.join(upload_folder, qr_filename))
 
     if qr and qr.filename:
 
