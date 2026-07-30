@@ -20,9 +20,27 @@ Track requests, payments and history without confusion.
 </a>
 
 </div>
-    <a href="/payment_settings">
-    <button type="submit">⚙️Payment Settings</button>
-    </a>
+    <div class="card">
+
+<h3>💳 Payment Method</h3>
+
+<p>
+Your saved payment method from
+<b>Payment Settings</b>
+will be attached automatically to every request.
+</p>
+
+<a href="/payment_settings">
+
+<button type="button">
+
+⚙️ Manage Payment Settings
+
+</button>
+
+</a>
+
+    </div>
 
 <a href="/notifications" class="notification-btn">
     🔔 Notifications
@@ -98,25 +116,6 @@ name="payment_mode"
 id="payment_mode"  
 onchange="changePlaceholder()">
 
-<option value="">  
-Select Payment Method  
-</option>  <option value="Digital Wallet">  
-Digital Wallet  
-</option>  <option value="Phone Number">  
-Phone Number  
-</option>  <option value="Bank Transfer">  
-Bank Transfer  
-</option>  <option value="Payment Link">  
-Payment Link  
-</option>  <option value="Cash">  
-Cash  
-</option>  <option value="Other">  
-Other  
-</option>  </select>  <input  
-type="text"  
-name="payment_info"  
-id="payment_info"  
-placeholder="Payment Info">
 
 <select name="status">  <option value="">  
 Select Status  
@@ -146,61 +145,7 @@ Upload Request
 
 </form>
 
-<script>
 
-function changePlaceholder() {
-
-let mode =
-document.getElementById("payment_mode").value;
-
-let info =
-document.getElementById("payment_info");
-
-if (mode === "Digital Wallet") {
-
-info.placeholder =
-"Enter Digital Payment Details";
-
-}
-
-else if (mode === "Phone Number") {
-
-info.placeholder =
-"Enter Payment Number";
-
-}
-
-else if (mode === "Bank Transfer") {
-
-info.placeholder =
-"Enter Bank Details";
-
-}
-
-else if (mode === "Payment Link") {
-
-info.placeholder =
-"Enter Payment Link";
-
-}
-
-else if (mode === "Cash") {
-
-info.placeholder =
-"Cash Payment Details";
-
-}
-
-else {
-
-info.placeholder =
-"Payment Info";
-
-}
-
-}
-
-</script>
 
 </body>
 </html>
