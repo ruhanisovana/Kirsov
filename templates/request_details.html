@@ -95,41 +95,92 @@ style="width: {{ progress }}%;">
  <strong>Overpaid:</strong> ₹{{ overpaid }}
 </p>
 {% endif %}
-
-<div class="payment-card">
+    <div class="payment-card">
 
     <h3>💳 Payment Details</h3>
 
     <div class="payment-row">
-        <span>Mode</span>
-        <strong>{{ person.payment_mode }}</strong>
+        <span>Payment Method</span>
+        <strong>
+            {{ setting.payment_mode if setting else "Not Set" }}
+        </strong>
     </div>
 
     <div class="payment-row">
-        <span>Details</span>
+        <span>Payment Details</span>
 
         <div class="payment-value">
 
-            {% if person.payment_info.startswith('http') %}
-                <a href="{{ person.payment_info }}" target="_blank">
+        {% if setting %}
+
+            {% if setting.payment_info.startswith("http") %}
+
+                <a href="{{ setting.payment_info }}" target="_blank">
                     🔗 Open Payment Link
                 </a>
 
-            {% elif person.payment_mode == "Phone Number" %}
-                <a href="tel:{{ person.payment_info }}">
-                    📞 {{ person.payment_info }}
-                </a>
+            {% elif setting.payment_mode == "PhonePe" %}
 
-            {% elif person.payment_mode == "Email" %}
-                <a href="mailto:{{ person.payment_info }}">
-                    ✉️ {{ person.payment_info }}
-                </a>
+                {{ setting.payment_info }}
+
+            {% elif setting.payment_mode == "Google Pay" %}
+
+                {{ setting.payment_info }}
+
+            {% elif setting.payment_mode == "Paytm" %}
+
+                {{ setting.payment_info }}
+
+            {% elif setting.payment_mode == "UPI" %}
+
+                {{ setting.payment_info }}
+
+            {% elif setting.payment_mode == "Bank Account" %}
+
+                {{ setting.payment_info }}
+
+            {% elif setting.payment_mode == "PayPal" %}
+
+                {{ setting.payment_info }}
+
+            {% elif setting.payment_mode == "Cash" %}
+
+                Cash Payment
 
             {% else %}
-                {{ person.payment_info }}
+
+                {{ setting.payment_info }}
+
             {% endif %}
 
+        {% else %}
+
+            Payment details not available.
+
+        {% endif %}
+
         </div>
+    </div>
+
+    {% if setting and setting.qr_image %}
+
+    <div class="payment-row">
+
+        <span>QR Code</span>
+
+        <div class="payment-value">
+
+            <img
+            src="/payment_qr/{{ person.sender_id }}"
+            width="220">
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    </div>
     </div>
 
 </div>
@@ -235,37 +286,45 @@ Send Text Message
 </button>
 </a>
 
-{% if person.payment_info %}
+    {% if setting %}
 
 <a
-href="{% if 'http' in person.payment_info %}{{ person.payment_info }}{% else %}#{% endif %}"
+href="{% if setting.payment_info.startswith('http') %}{{ setting.payment_info }}{% else %}#{% endif %}"
 target="_blank">
 
 <button type="button">
 
-{% if person.payment_mode == "Payment Link" %}
+{% if setting.payment_mode == "PhonePe" %}
 
-Pay Now
+Open PhonePe
 
-{% elif person.payment_mode == "Phone Number" %}
+{% elif setting.payment_mode == "Google Pay" %}
 
-Call / pay Now
+Open Google Pay
 
-{% elif person.payment_mode == "Digital Wallet" %}
+{% elif setting.payment_mode == "Paytm" %}
 
-Open Wallet
+Open Paytm
 
-{% elif person.payment_mode == "Bank Transfer" %}
+{% elif setting.payment_mode == "UPI" %}
+
+Pay with UPI
+
+{% elif setting.payment_mode == "PayPal" %}
+
+Open PayPal
+
+{% elif setting.payment_mode == "Bank Account" %}
 
 View Bank Details
 
-{% elif person.payment_mode == "Cash" %}
+{% elif setting.payment_mode == "Cash" %}
 
 Cash Payment
 
 {% else %}
 
-View Details
+View Payment Details
 
 {% endif %}
 
