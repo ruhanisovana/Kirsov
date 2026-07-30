@@ -96,6 +96,14 @@ Upload QR Code (Optional)
 
 </label>
 
+  {% if setting and setting.qr_image %}
+
+<img
+src="/static/qr_codes/{{ setting.qr_image }}"
+width="220">
+
+{% endif %}
+
 <br><br>
 
 <input
