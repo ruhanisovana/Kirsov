@@ -2684,18 +2684,8 @@ def save_payment_settings():
     payment_mode = request.form.get("payment_mode")
     payment_info = request.form.get("payment_info")
 
-    setting = db.execute("""
-    SELECT qr_image
-    FROM payment_settings
-    WHERE user_id = ?
-    """, session["user_id"])
-
-    filename = setting[0]["qr_image"] if setting else ""
-
-
+    
     qr = request.files["qr_image"]
-
-    filename = ""
 
     if qr and qr.filename:
         filename = secure_filename(qr.filename)
@@ -2705,7 +2695,6 @@ def save_payment_settings():
 
         qr_filename = secure_filename(qr.filename)
 
-        qr_data = qr.read()
 
     existing = db.execute("""
     SELECT id
