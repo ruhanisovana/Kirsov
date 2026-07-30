@@ -2170,6 +2170,12 @@ def request_details(id):
         return "request not found"
         
     person = person[0]
+
+    setting = db.execute("""
+SELECT *
+FROM payment_settings
+WHERE user_id = ?
+""", person["sender_id"])
     
     remaining = person["amount"] - person["amount_paid"]
 
@@ -2210,6 +2216,7 @@ def request_details(id):
     return render_template(
     "request_details.html",
     person=person,
+    setting=setting[0] if setting else None,
     payments=payments,
     notices=notices,
     remaining=remaining,
@@ -2551,6 +2558,12 @@ def shared_request(id):
 
     person = person[0]
 
+    setting = db.execute("""
+SELECT *
+FROM payment_settings
+WHERE user_id = ?
+""", person["sender_id"])
+
     payments = db.execute("""
     SELECT *
     FROM payment_history
@@ -2595,6 +2608,7 @@ def shared_request(id):
     return render_template(
         "shared_request.html",
         person=person,
+        setting=setting[0] if setting else None,
         payments=payments,
         notices=notices,
         corrections=corrections,
