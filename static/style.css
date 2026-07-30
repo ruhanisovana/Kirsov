@@ -1484,6 +1484,8 @@ button:hover{
 
     font-size:20px;
 
+    
+
     font-weight:bold;
 }
 
@@ -1495,3 +1497,31 @@ button:hover{
 
     font-size:20px;
 }
+.settings-container input,
+.settings-container textarea,
+.settings-container select{
+
+    color:#111 !important;
+
+    background:#ffffff !important;
+
+    font-size:20px;
+
+    font-weight:600;
+}
+
+.settings-container input::placeholder{
+
+    color:#666 !important;
+}
+
+.settings-container label{
+
+    color:#111 !important;
+
+    font-size:20px;
+
+    font-weight:bold;
+}
+
+
