@@ -2687,6 +2687,8 @@ def save_payment_settings():
     
     qr = request.files["qr_image"]
 
+    qr_filename = ""
+
     if qr and qr.filename:
         filename = secure_filename(qr.filename)
         qr.save(os.path.join("static/qr_codes", filename))
