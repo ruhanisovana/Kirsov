@@ -74,7 +74,9 @@ CREATE TABLE IF NOT EXISTS payment_settings (
     user_id INTEGER UNIQUE,
     payment_mode TEXT,
     payment_info TEXT,
-    qr_image TEXT
+    qr_image TEXT,
+    qr_image_data BYTEA
+    
 )
 """)
 db.execute("""CREATE TABLE IF NOT EXISTS payment_history ( id SERIAL PRIMARY KEY, request_id INTEGER, amount INTEGER, payment_date TEXT, created_at TEXT, status_flag TEXT DEFAULT 'active', deleted_at TEXT, user_id INTEGER, owner_id INTEGER)""")
