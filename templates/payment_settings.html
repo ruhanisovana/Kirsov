@@ -90,31 +90,23 @@ value="{{ setting.payment_info if setting else '' }}">
 
 <br><br>
 
-<label>
+<label>Upload QR Code (Optional)</label>
 
-Upload QR Code (Optional)
+<br><br>
 
-</label>
-
-  {% if setting and setting.qr_image %}
+{% if setting and setting.qr_image_data %}
 
 <img
-src="/static/qr_codes/{{ setting.qr_image }}"
+src="/payment_qr/{{ session['user_id'] }}"
 width="220">
+
+<br><br>
 
 {% endif %}
 
-<br><br>
-
 <input
-
 type="file"
-
 name="qr_image">
-
-<br><br>
-
-<button type="submit">
 
 💾 Save Payment Settings
 
