@@ -32,47 +32,53 @@ Payment Method
 
 <select name="payment_mode">
 
-<option value="">Options</option>
-
-<option value="UPI">
+<option value="UPI"
+{% if setting and setting.payment_mode == "UPI" %}selected{% endif %}>
 UPI
 </option>
 
-<option value="PhonePe">
+<option value="PhonePe"
+{% if setting and setting.payment_mode == "PhonePe" %}selected{% endif %}>
 PhonePe
 </option>
 
-<option value="Google Pay">
+<option value="Google Pay"
+{% if setting and setting.payment_mode == "Google Pay" %}selected{% endif %}>
 Google Pay
 </option>
 
-<option value="Paytm">
+<option value="Paytm"
+{% if setting and setting.payment_mode == "Paytm" %}selected{% endif %}>
 Paytm
 </option>
 
-<option value="Bank Account">
+<option value="Bank Account"
+{% if setting and setting.payment_mode == "Bank Account" %}selected{% endif %}>
 Bank Account
 </option>
 
-<option value="PayPal">
+<option value="PayPal"
+{% if setting and setting.payment_mode == "PayPal" %}selected{% endif %}>
 PayPal
 </option>
 
-  
-<option value="wise">
-wise
+<option value="Wise"
+{% if setting and setting.payment_mode == "Wise" %}selected{% endif %}>
+Wise
 </option>
 
-<option value="Payoneer">
-Payoneer 
+<option value="Payoneer"
+{% if setting and setting.payment_mode == "Payoneer" %}selected{% endif %}>
+Payoneer
 </option>
-  
 
-<option value="Cash">
+<option value="Cash"
+{% if setting and setting.payment_mode == "Cash" %}selected{% endif %}>
 Cash
 </option>
 
-<option value="Other">
+<option value="Other"
+{% if setting and setting.payment_mode == "Other" %}selected{% endif %}>
 Other
 </option>
 
