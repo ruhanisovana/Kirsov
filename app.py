@@ -2757,6 +2757,16 @@ def payment_qr(user_id):
         row[0]["qr_image_data"],
         mimetype="image/jpeg"
     )
+
+@app.route("/add_qr_column")
+def add_qr_column():
+
+    db.execute("""
+    ALTER TABLE payment_settings
+    ADD COLUMN IF NOT EXISTS qr_image_data BYTEA
+    """)
+
+    return "Done!"
   
 if __name__ == "__main__":
     import traceback
