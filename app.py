@@ -2658,7 +2658,6 @@ def payment_settings():
         setting=setting
     )
 
-
 @app.route("/save_payment_settings", methods=["POST"])
 def save_payment_settings():
 
@@ -2671,21 +2670,12 @@ def save_payment_settings():
     qr = request.files.get("qr_image")
 
     qr_filename = ""
+    qr_data = None
 
     if qr and qr.filename:
+
         qr_filename = secure_filename(qr.filename)
-
-        upload_folder = os.path.join(app.root_path, "static", "qr_codes")
-        os.makedirs(upload_folder, exist_ok=True)
-
-        file_path = os.path.join(upload_folder, qr_filename)
-
-        print("Filename:", qr_filename)
-        print("Saving to:", file_path)
-
-        qr.save(file_path)
-
-
+        qr_data = qr.read()
 
     existing = db.execute("""
     SELECT id
@@ -2695,18 +2685,35 @@ def save_payment_settings():
 
     if existing:
 
-        db.execute("""
-        UPDATE payment_settings
-        SET
-        payment_mode = ?,
-        payment_info = ?,
-        qr_image = ?
-        WHERE user_id = ?
-        """,
-        payment_mode,
-        payment_info,
-        qr_filename,
-        session["user_id"])
+        if qr_data:
+
+            db.execute("""
+            UPDATE payment_settings
+            SET
+            payment_mode = ?,
+            payment_info = ?,
+            qr_image = ?,
+            qr_image_data = ?
+            WHERE user_id = ?
+            """,
+            payment_mode,
+            payment_info,
+            qr_filename,
+            qr_data,
+            session["user_id"])
+
+        else:
+
+            db.execute("""
+            UPDATE payment_settings
+            SET
+            payment_mode = ?,
+            payment_info = ?
+            WHERE user_id = ?
+            """,
+            payment_mode,
+            payment_info,
+            session["user_id"])
 
     else:
 
@@ -2716,16 +2723,38 @@ def save_payment_settings():
         user_id,
         payment_mode,
         payment_info,
-        qr_image
+        qr_image,
+        qr_image_data
         )
-        VALUES (?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?)
         """,
         session["user_id"],
         payment_mode,
         payment_info,
-        qr_filename)
+        qr_filename,
+        qr_data)
 
     return redirect("/payment_settings")
+
+@app.route("/payment_qr/<int:user_id>")
+def payment_qr(user_id):
+
+    row = db.execute("""
+    SELECT qr_image_data
+    FROM payment_settings
+    WHERE user_id = ?
+    """, user_id)
+
+    if not row:
+        return "No QR"
+
+    if not row[0]["qr_image_data"]:
+        return "No QR"
+
+    return Response(
+        row[0]["qr_image_data"],
+        mimetype="image/jpeg"
+    )
   
 if __name__ == "__main__":
     import traceback
