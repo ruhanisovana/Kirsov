@@ -2668,21 +2668,23 @@ def save_payment_settings():
     payment_mode = request.form.get("payment_mode")
     payment_info = request.form.get("payment_info")
 
-    
-    qr = request.files["qr_image"]
+    qr = request.files.get("qr_image")
 
     qr_filename = ""
 
     if qr and qr.filename:
-        filename = secure_filename(qr.filename)
+        qr_filename = secure_filename(qr.filename)
+
         upload_folder = os.path.join(app.root_path, "static", "qr_codes")
         os.makedirs(upload_folder, exist_ok=True)
 
-        qr.save(os.path.join(upload_folder, qr_filename))
+        file_path = os.path.join(upload_folder, qr_filename)
 
-    if qr and qr.filename:
+        print("Filename:", qr_filename)
+        print("Saving to:", file_path)
 
-        qr_filename = secure_filename(qr.filename)
+        qr.save(file_path)
+
 
 
     existing = db.execute("""
