@@ -1,1 +1,40 @@
-
+USER
+ │
+ ▼
+┌──────────────────────────────┐
+│       KIRSOV WEB APP         │
+│       Flask + Jinja          │
+└──────────────┬───────────────┘
+               │
+       ┌───────┴────────┐
+       ▼                ▼
+┌─────────────┐  ┌──────────────┐
+│Authentication│  │ User Dashboard│
+│ Sessions     │  │ Search/Filter │
+└──────┬──────┘  └──────┬───────┘
+       │                │
+       └────────┬───────┘
+                ▼
+       ┌───────────────────┐
+       │  Business Logic   │
+       ├───────────────────┤
+       │ Requests          │
+       │ Payments          │
+       │ Status Management │
+       │ Payment Notices   │
+       │ Notifications     │
+       │ History           │
+       └─────────┬─────────┘
+                 │
+                 ▼
+       ┌──────────────────────┐
+       │     SQL DATABASE     │
+       ├──────────────────────┤
+       │ users                │
+       │ requests             │
+       │ payment_history      │
+       │ payment_notices      │
+       │ notifications        │
+       │ feedback             │
+       │ corrections/timeline│
+       └──────────────────────┘
