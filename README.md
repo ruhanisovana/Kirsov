@@ -50,6 +50,33 @@ Kirsov centralizes payment management into one system with reminders, notices, p
 - CSS
 - JavaScript
 
+- ## Product Screenshots
+
+### Dashboard
+The dashboard provides an overview of requests, payment status, and recent activity.
+
+![Kirsov Dashboard](screenshots/dashboard.png)
+
+### Request Management
+Users can create and manage payment requests with relevant payment and deadline information.
+
+![Request Management](screenshots/request-management.png)
+
+### Payment History
+Payments are recorded with their amount, status, remaining balance, and history.
+
+![Payment History](screenshots/payment-history.png)
+
+### Payment Notice & Proof
+Payment notices and supporting proof can be submitted and tracked through the system.
+
+![Payment Notice](screenshots/payment-notice.png)
+
+### Notifications
+The system provides notifications for relevant requests and payment-related events.
+
+![Notifications](screenshots/notifications.png)
+
 ---
 
 ## Live Demo
@@ -65,6 +92,8 @@ https://kirsov.onrender.com
 - WhatsApp API integration
 - Multi-user business accounts
 - Mobile application
+
+- 
 
 ---
 
