@@ -1,1 +1,15 @@
 
+                 KIRSOV DASHBOARD
+
+ ┌────────────┐ ┌────────────┐ ┌────────────┐
+ │   Total    │ │  Pending   │ │ Completed  │
+ │  Requests  │ │  Requests  │ │  Requests  │
+ └────────────┘ └────────────┘ └────────────┘
+
+ ┌────────────────────────────────────────────┐
+ │              Recent Requests               │
+ ├────────┬──────────┬──────────┬────────────┤
+ │ Name   │ Amount   │ Status   │ Deadline   │
+ └────────┴──────────┴──────────┴────────────┘
+
+             Search / Filter / Actions
